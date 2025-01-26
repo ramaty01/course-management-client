@@ -10,7 +10,7 @@ const AddAssignment = () => {
   const handleAddAssignment = async () => {
     try {
       await axios.post(
-        `http://localhost:5001/courses/${courseId}/assignments`,
+        `https://course-management-olsc.onrender.com/courses/${courseId}/assignments`,
         { title, description },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

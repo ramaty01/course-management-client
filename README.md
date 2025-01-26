@@ -9,7 +9,7 @@ npm start
 This should be enough to run locally.  
 You will probably have to replace  
 API_URL = 'https://course-management-olsc.onrender.com'  
-in all three pages with  
+in all components with  
 API_URL = 'http://localhost:5001'  
     
 To publish:  

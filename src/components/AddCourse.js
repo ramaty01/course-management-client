@@ -8,7 +8,7 @@ const AddCourse = () => {
   const handleAddCourse = async () => {
     try {
       await axios.post(
-        'http://localhost:5001/courses',
+        'https://course-management-olsc.onrender.com/courses',
         { name, description },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

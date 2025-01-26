@@ -11,7 +11,7 @@ const Dashboard = ({ role }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/courses', {
+        const response = await axios.get('https://course-management-olsc.onrender.com/courses', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setCourses(response.data);

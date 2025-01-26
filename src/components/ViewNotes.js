@@ -13,7 +13,7 @@ const ViewNotes = () => {
     const fetchNotes = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/courses/${courseId}/assignments/${assignmentId}/notes`,
+          `https://course-management-olsc.onrender.com/courses/${courseId}/assignments/${assignmentId}/notes`,
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
         setNotes(response.data);

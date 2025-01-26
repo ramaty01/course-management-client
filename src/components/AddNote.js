@@ -9,7 +9,7 @@ const AddNote = () => {
   const handleAddNote = async () => {
     try {
       await axios.post(
-        `http://localhost:5001/courses/${courseId}/assignments/${assignmentId}/notes`,
+        `https://course-management-olsc.onrender.com/courses/${courseId}/assignments/${assignmentId}/notes`,
         { content },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
