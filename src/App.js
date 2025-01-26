@@ -1,18 +1,28 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import CoursesPage from './pages/CoursesPage';
-import AssignmentsPage from './pages/AssignmentsPage';
-import CommentsPage from './pages/CommentsPage';
-import MenuBar from './components/MenuBar';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import AddCourse from './components/AddCourse';
+import AddAssignment from './components/AddAssignment';
+import AddNote from './components/AddNote';
+import ViewNotes from './components/ViewNotes';
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [role, setRole] = useState(localStorage.getItem('role') || '');
+
+  if (!token) {
+    return <Login setToken={setToken} setRole={setRole} />;
+  }
+
   return (
     <Router>
-      <MenuBar />
       <Routes>
-        <Route path="/" element={<CoursesPage />} />
-        <Route path="/assignments/:courseId" element={<AssignmentsPage />} />
-        <Route path="/comments/:courseId/:assignmentId" element={<CommentsPage />} />
+        <Route path="/" element={<Dashboard role={role} />} />
+        <Route path="/add-course" element={<AddCourse />} />
+        <Route path="/add-assignment/:courseId" element={<AddAssignment />} />
+        <Route path="/add-note/:courseId/:assignmentId" element={<AddNote />} />
+        <Route path="/view-notes/:courseId/:assignmentId" element={<ViewNotes />} />
       </Routes>
     </Router>
   );
