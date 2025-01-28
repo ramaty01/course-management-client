@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = ({ role }) => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    // Clear token and role
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate(0); // Redirect to login page
+  };
 
   // Fetch courses from the backend
   useEffect(() => {
@@ -36,7 +45,8 @@ const Dashboard = ({ role }) => {
   return (
     <div>
       <h1>Dashboard</h1>
-
+      {/* Add the Sign Out button */}
+      <button onClick={handleSignOut}>Sign Out</button>
       {/* Admin role actions */}
       {role === 'admin' && (
         <div>

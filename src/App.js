@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
+import SignUp from './components/SignUp';
 import Dashboard from './components/Dashboard';
 import AddCourse from './components/AddCourse';
 import AddAssignment from './components/AddAssignment';
@@ -12,7 +13,14 @@ function App() {
   const [role, setRole] = useState(localStorage.getItem('role') || '');
 
   if (!token) {
-    return <Login setToken={setToken} setRole={setRole} />;
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login setToken={setToken} setRole={setRole} />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </Router>
+    );
   }
 
   return (
