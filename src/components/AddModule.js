@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const AddModule = () => {
   const { courseId } = useParams();
   const [name, setName] = useState('');
@@ -10,7 +11,7 @@ const AddModule = () => {
   const handleAddModule = async () => {
     try {
       await axios.post(
-        `http://localhost:5001/courses/${courseId}/modules`,
+        `${REACT_APP_API_URL}/courses/${courseId}/modules`,
         { name },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

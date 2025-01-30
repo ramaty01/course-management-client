@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const ViewModule = () => {
   const { courseId } = useParams(); // Get courseId from URL
   const [modules, setModules] = useState([]);
@@ -12,7 +13,7 @@ const ViewModule = () => {
   useEffect(() => {
     const fetchModules = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/courses/${courseId}/modules`);
+        const response = await axios.get(`${REACT_APP_API_URL}/courses/${courseId}/modules`);
         setModules(response.data);
         setLoading(false);
       } catch (err) {

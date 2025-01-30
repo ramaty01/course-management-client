@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const Dashboard = ({ role }) => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ const Dashboard = ({ role }) => {
   // Fetch all courses from the backend
   useEffect(() => {
     axios
-      .get('http://localhost:5001/courses')
+      .get(`${REACT_APP_API_URL}/courses`)
       .then((response) => setCourses(response.data))
       .catch((error) => console.error('Error fetching courses:', error));
   }, []);
@@ -18,7 +20,7 @@ const Dashboard = ({ role }) => {
   const handleSignOut = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-    navigate('/');
+    navigate(0);
   };
 
   return (

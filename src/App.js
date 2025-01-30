@@ -8,6 +8,8 @@ import AddModule from './components/AddModule';
 import AddNote from './components/AddNote';
 import ViewNotes from './components/ViewNotes';
 import ViewModule from './components/ViewModule';
+import ViewComments from './components/ViewComments';
+import AddComment from './components/AddComment';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -33,6 +35,8 @@ function App() {
         <Route path="/view-modules/:courseId" element={<ViewModule />} />
         <Route path="/add-note/:moduleId" element={<AddNote />} />
         <Route path="/view-notes/:moduleId" element={<ViewNotes />} />
+        <Route path="/view-comments/:courseNoteId" element={<ViewComments />} />
+        <Route path="/add-comment/:courseNoteId" element={<AddComment />} />
       </Routes>
     </Router>
   );

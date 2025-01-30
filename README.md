@@ -4,13 +4,14 @@ git clone git@github.com:ramaty01/course-management-client.git
 Install npm package:  
 npm install axios  
 npm install react-router-dom  
+npm install dotenv --save
 npm start  
   
 This should be enough to run locally.  
 You will probably have to replace  
-API_URL = 'https://course-management-olsc.onrender.com'  
-in all components with  
-API_URL = 'http://localhost:5001'  
+REACT_APP_API_URL = 'https://course-management-olsc.onrender.com'  
+in the .env 
+REACT_APP_API_URL = 'http://localhost:5001'  
     
 To publish:  
 npm run build  

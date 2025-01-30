@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const AddNote = () => {
   const { moduleId } = useParams();
   const [content, setContent] = useState('');
@@ -10,7 +11,7 @@ const AddNote = () => {
   const handleAddNote = async () => {
     try {
       await axios.post(
-        `http://localhost:5001/modules/${moduleId}/notes`,
+        `${REACT_APP_API_URL}/modules/${moduleId}/notes`,
         { content },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

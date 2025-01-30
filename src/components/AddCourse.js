@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const AddCourse = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -10,7 +11,7 @@ const AddCourse = () => {
   const handleAddCourse = async () => {
     try {
       await axios.post(
-        'http://localhost:5001/courses',
+        `${REACT_APP_API_URL}/courses`,
         { name, description },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
