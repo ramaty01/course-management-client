@@ -17,7 +17,7 @@ const SignUp = () => {
     }
 
     try {
-      await axios.post('https://course-management-olsc.onrender.com/auth/register', {
+      await axios.post('http://localhost:5001/auth/register', {
         email,
         username,
         password,

@@ -3,50 +3,23 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const ViewNotes = () => {
-  const { courseId, assignmentId } = useParams();
+  const { moduleId } = useParams();
   const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
-  // Fetch notes when the component loads
   useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const response = await axios.get(
-          `https://course-management-olsc.onrender.com/courses/${courseId}/assignments/${assignmentId}/notes`,
-          { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-        );
-        setNotes(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch notes');
-        setLoading(false);
-      }
-    };
-
-    fetchNotes();
-  }, [courseId, assignmentId]);
-
-  if (loading) {
-    return <p>Loading notes...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
+    axios.get(`http://localhost:5001/modules/${moduleId}/notes`)
+      .then(response => setNotes(response.data))
+      .catch(error => console.error('Failed to fetch notes:', error));
+  }, [moduleId]);
 
   return (
     <div>
       <h2>Notes</h2>
-      {notes.length > 0 ? (
-        <ul>
-          {notes.map((note, index) => (
-            <li key={index}>{note.content}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No notes available for this assignment.</p>
-      )}
+      <ul>
+        {notes.length > 0 ? notes.map((note, index) => (
+          <li key={index}>{note.content}</li>
+        )) : <p>No notes available.</p>}
+      </ul>
     </div>
   );
 };

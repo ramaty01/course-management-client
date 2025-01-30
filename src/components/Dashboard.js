@@ -1,101 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const Dashboard = ({ role }) => {
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
-    // Clear token and role
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    navigate(0); // Redirect to login page
-  };
-
-  // Fetch courses from the backend
+  // Fetch all courses from the backend
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get('https://course-management-olsc.onrender.com/courses', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        });
-        setCourses(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch courses');
-        setLoading(false);
-      }
-    };
-
-    fetchCourses();
+    axios
+      .get('http://localhost:5001/courses')
+      .then((response) => setCourses(response.data))
+      .catch((error) => console.error('Error fetching courses:', error));
   }, []);
 
-  if (loading) {
-    return <p>Loading courses...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
+  // Handle user sign out
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/');
+  };
 
   return (
     <div>
       <h1>Dashboard</h1>
-      {/* Add the Sign Out button */}
       <button onClick={handleSignOut}>Sign Out</button>
-      {/* Admin role actions */}
+
+      {/* Admin can add new courses */}
       {role === 'admin' && (
-        <div>
-          <Link to="/add-course">
-            <button>Add Course</button>
-          </Link>
-        </div>
+        <Link to="/add-course">
+          <button>Add Course</button>
+        </Link>
       )}
 
-      {/* Display courses and assignments */}
-      <div>
-        <h2>Courses</h2>
-        {courses.map((course) => (
+      <h2>Courses</h2>
+
+      {/* Display courses dynamically */}
+      {courses.length > 0 ? (
+        courses.map((course) => (
           <div key={course._id}>
             <h3>{course.name}</h3>
             <p>{course.description}</p>
 
-            {/* Assignments within the course */}
-            <h4>Assignments</h4>
-            {course.assignments.length > 0 ? (
-              course.assignments.map((assignment) => (
-                <div key={assignment._id}>
-                  <h5>{assignment.title}</h5>
-                  <p>{assignment.description}</p>
+            {/* Button to View Modules for this course */}
+            <Link to={`/view-modules/${course._id}`}>
+              <button>View Modules</button>
+            </Link>
 
-                  {/* Add notes link (for users) */}
-                  <Link to={`/add-note/${course._id}/${assignment._id}`}>
-                    <button>Add Note</button>
-                  </Link>
-
-                  {/* View notes link (for everyone) */}
-                  <Link to={`/view-notes/${course._id}/${assignment._id}`}>
-                    <button>View Notes</button>
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <p>No assignments added yet.</p>
-            )}
-
-            {/* Add assignment link (for admins) */}
+            {/* Admin can add new modules to this course */}
             {role === 'admin' && (
-              <Link to={`/add-assignment/${course._id}`}>
-                <button>Add Assignment</button>
+              <Link to={`/add-module/${course._id}`}>
+                <button>Add Module</button>
               </Link>
             )}
           </div>
-        ))}
-      </div>
+        ))
+      ) : (
+        <p>No courses available.</p>
+      )}
     </div>
   );
 };
