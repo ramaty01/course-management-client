@@ -10,6 +10,7 @@ import ViewNotes from './components/ViewNotes';
 import ViewModule from './components/ViewModule';
 import ViewComments from './components/ViewComments';
 import AddComment from './components/AddComment';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -18,16 +19,19 @@ function App() {
   if (!token) {
     return (
       <Router>
+        <div className="container d-flex justify-content-center align-items-center vh-100">
         <Routes>
           <Route path="/" element={<Login setToken={setToken} setRole={setRole} />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
+        </div>
       </Router>
     );
   }
 
   return (
     <Router>
+      <div className="container mt-4">
       <Routes>
         <Route path="/" element={<Dashboard role={role} />} />
         <Route path="/add-course" element={<AddCourse />} />
@@ -38,6 +42,7 @@ function App() {
         <Route path="/view-comments/:courseNoteId" element={<ViewComments />} />
         <Route path="/add-comment/:courseNoteId" element={<AddComment />} />
       </Routes>
+      </div>
     </Router>
   );
 }

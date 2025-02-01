@@ -58,8 +58,8 @@ const ViewNotes = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <h2>Notes</h2>
+    <div className="container">
+      <h2 className="mb-4">Notes</h2>
       <p> </p>
       {/* Search Bar */}
       <input
@@ -72,16 +72,18 @@ const ViewNotes = () => {
       <p> </p>
       {/* Button to add notes for the module */}
       <Link to={`/add-note/${moduleId}`}>
-          <button>Add Note</button>
+          <button className="btn btn-primary mb-3">Add Note</button>
       </Link>
 
       
-
+      <div className="row">
       {filteredNotes.length > 0 ? (
         filteredNotes.map((note) => (
-          <div key={note._id}>
-            <p>{note.content}</p>
-            <p>Votes: {note.votes}</p>
+          <div key={note._id} className="col-md-6">
+            <div className="card shadow-sm mb-3">
+            <div className="card-body">
+            <p className="card-text">{note.content}</p>
+            <p className="text-muted">Votes: {note.votes}</p>
 
             {/* Disable button if user already voted */}
             <button
@@ -99,15 +101,17 @@ const ViewNotes = () => {
             </button>
             {/* Button to View Comments for the Note */}
             <Link to={`/view-comments/${note._id}`}>
-              <button>View Comments</button>
+              <button className="btn btn-outline-secondary">View Comments</button>
             </Link>
-
+            </div>
+            </div>
           </div>
         ))
         
       ) : (
         <p>No notes available.</p>
       )}
+      </div>
     </div>
   );
 };

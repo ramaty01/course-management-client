@@ -45,13 +45,17 @@ const ViewComments = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <h2>Comments</h2>
+    <div className="container">
+      <h2 className="mb-4">Comments</h2>
+
+      <div className="row">
       {comments.length > 0 ? (
         comments.map((comment) => (
-          <div key={comment._id}>
-            <p>{comment.content}</p>
-            <p>Votes: {comment.votes}</p>
+          <div key={comment._id} className="col-md-6">
+            <div className="card shadow-sm mb-3">
+            <div className="card-body">
+            <p className="card-text">{comment.content}</p>
+            <p className="text-muted">Votes: {comment.votes}</p>
 
             {/* Disable button if user already voted */}
             <button
@@ -68,6 +72,8 @@ const ViewComments = () => {
               👎 Downvote
             </button>
           </div>
+          </div>
+          </div>
         ))
       ) : (
         <p>No comments yet.</p>
@@ -77,6 +83,7 @@ const ViewComments = () => {
       <Link to={`/add-comment/${courseNoteId}`}>
               <button>Add Comment</button>
       </Link>
+      </div>
     </div>
   );
 };
