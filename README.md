@@ -5,6 +5,7 @@ Install npm package:
 npm install axios  
 npm install react-router-dom  
 npm install dotenv --save
+npm install bootstrap
 npm start  
   
 This should be enough to run locally.  
