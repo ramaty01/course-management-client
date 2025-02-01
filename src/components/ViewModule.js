@@ -31,16 +31,19 @@ const ViewModule = () => {
   return (
     <div>
       <h2>Modules for Course</h2>
+
+      <p></p>
+      {/* Back button to return to the Dashboard */}
+      <Link to="/">
+        <button>Back to Dashboard</button>
+      </Link>
       
       {modules.length > 0 ? (
         modules.map((module) => (
           <div key={module._id}>
             <h3>{module.name}</h3>
 
-            {/* Button to add notes for the module */}
-            <Link to={`/add-note/${module._id}`}>
-              <button>Add Note</button>
-            </Link>
+            
 
             {/* Button to view notes for the module */}
             <Link to={`/view-notes/${module._id}`}>
@@ -52,10 +55,6 @@ const ViewModule = () => {
         <p>No modules available for this course.</p>
       )}
 
-      {/* Back button to return to the Dashboard */}
-      <Link to="/">
-        <button>Back to Dashboard</button>
-      </Link>
     </div>
   );
 };

@@ -15,7 +15,7 @@ const AddNote = () => {
         { content },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
-      navigate('/');
+      navigate(`/view-notes/${moduleId}`);
     } catch (error) {
       console.error('Failed to add note:', error);
     }
