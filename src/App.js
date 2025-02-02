@@ -36,10 +36,10 @@ function App() {
         <Route path="/" element={<Dashboard role={role} />} />
         <Route path="/add-course" element={<AddCourse />} />
         <Route path="/add-module/:courseId" element={<AddModule />} />
-        <Route path="/view-modules/:courseId" element={<ViewModule />} />
+        <Route path="/view-modules/:courseId" element={<ViewModule role={role} />} />
         <Route path="/add-note/:moduleId" element={<AddNote />} />
-        <Route path="/view-notes/:moduleId" element={<ViewNotes />} />
-        <Route path="/view-comments/:courseNoteId" element={<ViewComments />} />
+        <Route path="/view-notes/:moduleId" element={<ViewNotes role={role}/>} />
+        <Route path="/view-comments/:courseNoteId" element={<ViewComments role={role} />} />
         <Route path="/add-comment/:courseNoteId" element={<AddComment />} />
       </Routes>
       </div>

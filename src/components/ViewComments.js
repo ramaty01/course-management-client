@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-const ViewComments = () => {
+const ViewComments = ({role}) => {
   const { courseNoteId } = useParams();
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,6 +27,20 @@ const ViewComments = () => {
     fetchComments();
   }, [courseNoteId]);
 
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm('Are you sure you want to delete this comment?')) return;
+
+    try {
+      await axios.delete(`${REACT_APP_API_URL}/comments/${commentId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+
+      setComments(comments.filter(comment => comment._id !== commentId));
+    } catch (error) {
+      alert('Failed to delete comment');
+    }
+  };
+
   const handleVote = async (commentId, voteType) => {
     try {
       const response = await axios.put(
@@ -47,7 +61,10 @@ const ViewComments = () => {
   return (
     <div className="container">
       <h2 className="mb-4">Comments</h2>
-
+      <p></p>
+        {/* Back button to return to the Notes */}
+          <button onClick={() => navigate(-1)}>Back to Notes</button>
+      <p></p>
       <div className="row">
       {comments.length > 0 ? (
         comments.map((comment) => (
@@ -56,6 +73,8 @@ const ViewComments = () => {
             <div className="card-body">
             <p className="card-text">{comment.content}</p>
             <p className="text-muted">Votes: {comment.votes}</p>
+            <p className="text-muted">✍️ {comment.userId.username}</p>
+            <p className="text-muted">🕒 {comment.timestamp}</p>
 
             {/* Disable button if user already voted */}
             <button
@@ -71,6 +90,13 @@ const ViewComments = () => {
             >
               👎 Downvote
             </button>
+
+            {/* Delete Button for Admins or the Comment's Author */}
+            {(role === 'admin' || comment.userId === userId) && (
+                <button onClick={() => handleDeleteComment(comment._id)} >
+                  ❌ Delete comment
+                </button>
+              )}
           </div>
           </div>
           </div>

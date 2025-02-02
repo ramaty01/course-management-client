@@ -17,11 +17,12 @@ const Login = ({ setToken, setRole }) => {
         username,
         password,
       });
-      const { token, role } = response.data;
+      const { token, role, userId } = response.data;
       setToken(token);
       setRole(role);
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
+      localStorage.setItem('userId', userId);
     } catch (error) {
       console.error('Login failed');
     }

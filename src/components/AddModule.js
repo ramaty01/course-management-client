@@ -15,7 +15,7 @@ const AddModule = () => {
         { name },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
-      navigate('/');
+      navigate(`/view-modules/${courseId}`);
     } catch (error) {
       console.error('Failed to add module:', error);
     }

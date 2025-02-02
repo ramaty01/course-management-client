@@ -20,7 +20,22 @@ const Dashboard = ({ role }) => {
   const handleSignOut = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('userId');
     navigate(0);
+  };
+
+  const handleDeleteCourse = async (courseId) => {
+    if (!window.confirm('Are you sure you want to delete this course?')) return;
+
+    try {
+      await axios.delete(`${REACT_APP_API_URL}/courses/${courseId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+
+      setCourses(courses.filter((course) => course._id !== courseId));
+    } catch (error) {
+      alert('Failed to delete course');
+    }
   };
 
   return (
@@ -50,15 +65,17 @@ const Dashboard = ({ role }) => {
 
                 {/* Button to View Modules for this course */}
                 <Link to={`/view-modules/${course._id}`}>
-                  <button>View Modules</button>
+                  <button>📖 View Modules</button>
                 </Link>
 
-                {/* Admin can add new modules to this course */}
+                
+
+                {/* Delete Button for Admins */}
                 {role === 'admin' && (
-                  <Link to={`/add-module/${course._id}`}>
-                    <button>Add Module</button>
-                  </Link>
-                )}
+                <button onClick={() => handleDeleteCourse(course._id)} >
+                      ❌ Delete Course
+                </button>
+                  )}
               </div>
             </div>
           </div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-const ViewNotes = () => {
+const ViewNotes = ({role}) => {
   const { moduleId } = useParams();
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]); // New state for search filtering
@@ -29,6 +29,21 @@ const ViewNotes = () => {
 
     fetchNotes();
   }, [moduleId]);
+
+  const handleDeleteNote = async (noteId) => {
+    if (!window.confirm('Are you sure you want to delete this note?')) return;
+
+    try {
+      await axios.delete(`${REACT_APP_API_URL}/notes/${noteId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+
+      setNotes(notes.filter(note => note._id !== noteId));
+      navigate(0);
+    } catch (error) {
+      alert('Failed to delete note');
+    }
+  };
 
   const handleVote = async (noteId, voteType) => {
     try {
@@ -60,6 +75,12 @@ const ViewNotes = () => {
   return (
     <div className="container">
       <h2 className="mb-4">Notes</h2>
+
+      <p></p>
+        {/* Back button to return to the Modules */}
+          <button onClick={() => navigate(-1)}>Back to Modules</button>
+      <p></p>
+
       <p> </p>
       {/* Search Bar */}
       <input
@@ -84,6 +105,8 @@ const ViewNotes = () => {
             <div className="card-body">
             <p className="card-text">{note.content}</p>
             <p className="text-muted">Votes: {note.votes}</p>
+            <p className="text-muted">✍️ {note.userId.username}</p>
+            <p className="text-muted">🕒 {note.timestamp}</p>
 
             {/* Disable button if user already voted */}
             <button
@@ -97,11 +120,19 @@ const ViewNotes = () => {
               onClick={() => handleVote(note._id, 'downvote')}
               disabled={note.votedUsers.includes(userId)}
             >
-              👎 Downvote
+              👎 Downvote 
             </button>
+
+            {/* Delete Button for Admins or the Note's Author */}
+            {(role === 'admin' || note.userId === userId) && (
+                <button onClick={() => handleDeleteNote(note._id)} >
+                  ❌ Delete note 
+                </button>
+            )}
+
             {/* Button to View Comments for the Note */}
             <Link to={`/view-comments/${note._id}`}>
-              <button className="btn btn-outline-secondary">View Comments</button>
+              <button className="btn btn-outline-secondary">💬 View Comments</button>
             </Link>
             </div>
             </div>
