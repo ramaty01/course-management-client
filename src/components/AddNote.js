@@ -8,7 +8,8 @@ const AddNote = () => {
   const [content, setContent] = useState('');
   const navigate = useNavigate();
 
-  const handleAddNote = async () => {
+  const handleAddNote = async (e) => {
+    e.preventDefault();
     try {
       await axios.post(
         `${REACT_APP_API_URL}/modules/${moduleId}/notes`,
@@ -22,10 +23,21 @@ const AddNote = () => {
   };
 
   return (
-    <div>
-      <h2>Add Note</h2>
-      <textarea placeholder="Write your note here..." value={content} onChange={(e) => setContent(e.target.value)} />
-      <button onClick={handleAddNote}>Add Note</button>
+    <div className="container mt-4">
+      <h2>Add Course Note</h2>
+      <form onSubmit={handleAddNote}>
+        <div className="mb-3">
+          <label className="form-label">Note Content</label>
+          <textarea
+            className="form-control"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" className="btn btn-primary">Add Note</button>
+      </form>
     </div>
   );
 };

@@ -91,6 +91,13 @@ const ViewComments = ({role}) => {
               👎 Downvote
             </button>
 
+            {/* Edit Comment Button for Admins or Comment Author */}
+            {(role === 'admin' || comment.userId?._id === userId) && (
+                <Link to={`/edit-comment/${comment._id}`}>
+                <button>  ✏️ Edit comment </button>
+                </Link>
+              )}
+
             {/* Delete Button for Admins or the Comment's Author */}
             {(role === 'admin' || comment.userId === userId) && (
                 <button onClick={() => handleDeleteComment(comment._id)} >

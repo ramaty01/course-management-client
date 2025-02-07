@@ -69,13 +69,20 @@ const ViewModule = ({role}) => {
               <h3>{module.name}</h3>
             {/* Button to view notes for the module */}
             <Link to={`/view-notes/${module._id}`}>
-              <button>📝 View Notes</button>
+              <button> 📝 View Notes </button>
             </Link>
+
+            {/* Admin Edit Button */}
+            {role === 'admin' && (
+                <Link to={`/edit-module/${module._id}`}>
+                <button>  ✏️ Edit module </button>
+                </Link>
+              )}
 
             {/* Admin Delete Button */}
             {role === 'admin' && (
               <button onClick={() => handleDeleteModule(module._id)}>
-                ❌ Delete module
+                ❌ Delete module 
               </button>
             )}
             </div>

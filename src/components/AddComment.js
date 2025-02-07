@@ -9,7 +9,8 @@ const AddComment = () => {
   const [content, setContent] = useState('');
   const navigate = useNavigate();
 
-  const handleAddComment = async () => {
+  const handleAddComment = async (e) => {
+    e.preventDefault();
     try {
       await axios.post(
         `${REACT_APP_API_URL}/notes/${courseNoteId}/comments`,
@@ -23,14 +24,21 @@ const AddComment = () => {
   };
 
   return (
-    <div>
+    <div className="container mt-4">
       <h2>Add Comment</h2>
-      <textarea
-        placeholder="Write your comment..."
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <button onClick={handleAddComment}>Submit Comment</button>
+      <form onSubmit={handleAddComment}>
+        <div className="mb-3">
+          <label className="form-label">Comment Content</label>
+          <textarea
+            className="form-control"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" className="btn btn-primary">Add Comment</button>
+      </form>
     </div>
   );
 };

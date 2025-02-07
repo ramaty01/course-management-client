@@ -62,18 +62,25 @@ const Dashboard = ({ role }) => {
               <div className="card-body">
                 <h5 className="card-title">{course.name}</h5>
                 <p className="card-text">{course.description}</p>
+                <p className="text-muted"><strong>Semester:</strong> {course.semester} {course.year}</p>
+                <p className="text-muted"><strong>Format:</strong> {course.format}</p>
 
                 {/* Button to View Modules for this course */}
                 <Link to={`/view-modules/${course._id}`}>
-                  <button>📖 View Modules</button>
+                  <button> 📖 View Modules </button>
                 </Link>
 
-                
+                {/* Edit Button for Admins */}
+                {role === 'admin' && (
+                      <Link to={`/edit-course/${course._id}`}>
+                        <button> ✏️ Edit Course </button>
+                      </Link>
+                    )}
 
                 {/* Delete Button for Admins */}
                 {role === 'admin' && (
                 <button onClick={() => handleDeleteCourse(course._id)} >
-                      ❌ Delete Course
+                      ❌ Delete Course 
                 </button>
                   )}
               </div>

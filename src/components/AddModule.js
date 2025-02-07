@@ -8,7 +8,8 @@ const AddModule = () => {
   const [name, setName] = useState('');
   const navigate = useNavigate();
 
-  const handleAddModule = async () => {
+  const handleAddModule = async (e) => {
+    e.preventDefault();
     try {
       await axios.post(
         `${REACT_APP_API_URL}/courses/${courseId}/modules`,
@@ -22,10 +23,22 @@ const AddModule = () => {
   };
 
   return (
-    <div>
+    <div className="container mt-4">
       <h2>Add Module</h2>
-      <input type="text" placeholder="Module Name" value={name} onChange={(e) => setName(e.target.value)} />
-      <button onClick={handleAddModule}>Add Module</button>
+      <form onSubmit={handleAddModule}>
+        <div className="mb-3">
+          <label className="form-label">Module Name</label>
+          <input
+            type="text"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary">Add Module</button>
+      </form>
     </div>
   );
 };
