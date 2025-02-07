@@ -15,6 +15,7 @@ in the .env
 REACT_APP_API_URL = 'http://localhost:5001'  
     
 To publish:  
+(DONT DO THIS UNLESS YOU ARE CERTAIN THE BUILD WONT FAIL SINCE THIS DEPLOYS THE APP)
 npm run build  
 npm install gh-pages --save-dev  
 npm run deploy  
