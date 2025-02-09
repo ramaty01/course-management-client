@@ -15,7 +15,9 @@ const ViewComments = ({role}) => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`${REACT_APP_API_URL}/notes/${courseNoteId}/comments`);
+        const response = await axios.get(`${REACT_APP_API_URL}/notes/${courseNoteId}/comments`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+          });
         setComments(response.data);
         setLoading(false);
       } catch (err) {
@@ -103,6 +105,11 @@ const ViewComments = ({role}) => {
                 <button onClick={() => handleDeleteComment(comment._id)} >
                   ❌ Delete comment
                 </button>
+              )}
+
+            {/* Show Flag Icon if Note is Flagged */}
+            {comment.isFlagged && role === 'admin' && (
+                <span className="text-danger" title="This note is flagged">🚩 Flagged</span>
               )}
           </div>
           </div>

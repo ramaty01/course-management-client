@@ -17,7 +17,9 @@ const ViewNotes = ({role}) => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get(`${REACT_APP_API_URL}/modules/${moduleId}/notes`);
+        const response = await axios.get(`${REACT_APP_API_URL}/modules/${moduleId}/notes`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
         setNotes(response.data);
         setFilteredNotes(response.data); // Initialize filtered notes
         setLoading(false);
@@ -103,10 +105,13 @@ const ViewNotes = ({role}) => {
           <div key={note._id} className="col-md-6">
             <div className="card shadow-sm mb-3">
             <div className="card-body">
+              
             <p className="card-text">{note.content}</p>
             <p className="text-muted">Votes: {note.votes}</p>
             <p className="text-muted">✍️ {note.userId.username}</p>
             <p className="text-muted">🕒 {note.timestamp}</p>
+
+      
 
             {/* Disable button if user already voted */}
             <button
@@ -139,8 +144,13 @@ const ViewNotes = ({role}) => {
 
             {/* Button to View Comments for the Note */}
             <Link to={`/view-comments/${note._id}`}>
-              <button className="btn btn-outline-secondary">💬 View Comments</button>
+              <button className="btn btn-outline-secondary">💬 View Comments </button>
             </Link>
+
+            {/* Show Flag Icon if Note is Flagged */}
+            {note.isFlagged && role === 'admin' && (
+                <span className="text-danger" title="This note is flagged">🚩 Flagged</span>
+              )}
             </div>
             </div>
           </div>
