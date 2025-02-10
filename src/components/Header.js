@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from "../logo.svg";
 
-const Header = () =>{
+const Header = () => {
 
     const navigate = useNavigate();
 
@@ -12,14 +12,14 @@ const Header = () =>{
         localStorage.removeItem('userId');
         navigate(0);
     };
-    
+
     return (
         <header>
             <nav className="navbar navbar-expand-lg custom-navbar">
                 <div className="container">
                     <Link className="navbar-brand" to="/">
                         <img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top" />
-                            Course Notes App
+                        Course Notes App
                     </Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
