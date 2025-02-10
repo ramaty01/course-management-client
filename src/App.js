@@ -14,6 +14,7 @@ import ViewModule from './components/ViewModule';
 import ViewComments from './components/ViewComments';
 import AddComment from './components/AddComment';
 import EditComment from './components/EditComment';
+import Header from './components/Header';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -34,7 +35,9 @@ function App() {
   }
 
   return (
+    <>
     <Router>
+      <Header></Header>
       <div className="container mt-4">
       <Routes>
         <Route path="/" element={<Dashboard role={role} />} />
@@ -52,6 +55,7 @@ function App() {
       </Routes>
       </div>
     </Router>
+    </>
   );
 }
 
