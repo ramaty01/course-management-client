@@ -6,7 +6,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const Dashboard = ({ role }) => {
   const [courses, setCourses] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Fetch all courses from the backend
   useEffect(() => {
@@ -16,13 +16,13 @@ const Dashboard = ({ role }) => {
       .catch((error) => console.error('Error fetching courses:', error));
   }, []);
 
-  // Handle user sign out
-  const handleSignOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('userId');
-    navigate(0);
-  };
+  // // Handle user sign out
+  // const handleSignOut = () => {
+  //   localStorage.removeItem('token');
+  //   localStorage.removeItem('role');
+  //   localStorage.removeItem('userId');
+  //   navigate(0);
+  // };
 
   const handleDeleteCourse = async (courseId) => {
     if (!window.confirm('Are you sure you want to delete this course?')) return;
@@ -42,7 +42,7 @@ const Dashboard = ({ role }) => {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Dashboard</h1>
-        <button onClick={handleSignOut} className="btn btn-danger">Sign Out</button>
+        {/* <button onClick={handleSignOut} className="btn btn-danger">Sign Out</button> */}
       </div>
 
       {/* Admin can add new courses */}
