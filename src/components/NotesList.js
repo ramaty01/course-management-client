@@ -167,15 +167,15 @@ const NotesList = ({ role }) => {
                                                             <ul class="list-group list-group-flush">
                                                                 <li class="list-group-item d-flex justify-content-between">
                                                                     <span>#1</span>
-                                                                    <span>Some Comments here, asdfasdf 1</span>
+                                                                    <span className="ms-2">Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1</span>
                                                                 </li>
                                                                 <li class="list-group-item d-flex justify-content-between">
                                                                     <span>#2</span>
-                                                                    <span>Some Comments here, asdfasdf 2</span>
+                                                                    <span className="ms-2">Some Comments here, asdfasdf 2</span>
                                                                 </li>
                                                                 <li class="list-group-item d-flex justify-content-between">
                                                                     <span>#3</span>
-                                                                    <span>Some Comments here, asdfasdf 3</span>
+                                                                    <span className="ms-2">Some Comments here, asdfasdf 3</span>
                                                                 </li>
                                                             </ul>
                                                         </div>
