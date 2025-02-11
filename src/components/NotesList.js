@@ -113,22 +113,6 @@ const NotesList = ({ role }) => {
                                                 <br />
                                                 <p className="mt-1">{note.content}</p>
 
-                                                <div className="text-end mb-3">
-                                                    {/* Edit Note Button for Admins or Note Author */}
-                                                    {(role === 'admin' || note.userId?._id === userId) && (
-                                                        <Link to={`/edit-note/${note._id}`} >
-                                                            <button className="btn btn-sm btn-light me-3">✏️</button>
-                                                        </Link>
-                                                    )}
-                                                    {/* Delete Button for Admins or the Note's Author */}
-                                                    {(role === 'admin' || note.userId === userId) && (
-                                                        <button className="btn btn-sm btn-light" onClick={() => handleDeleteNote(note._id)} >
-                                                            ❌
-                                                        </button>
-                                                    )}
-                                                </div>
-
-
 
                                                 <div className="text-end">
 
@@ -140,6 +124,18 @@ const NotesList = ({ role }) => {
                                                         <button className="btn btn-sm btn-light ms-3" onClick={() => handleVote(note._id, 'downvote')}
                                                             disabled={note.votedUsers.includes(userId)}>👎</button>
 
+                                                        {/* Edit Note Button for Admins or Note Author */}
+                                                        {(role === 'admin' || note.userId?._id === userId) && (
+                                                            <Link to={`/edit-note/${note._id}`} >
+                                                                <button className="btn btn-sm btn-light ms-3">✏️</button>
+                                                            </Link>
+                                                        )}
+                                                        {/* Delete Button for Admins or the Note's Author */}
+                                                        {(role === 'admin' || note.userId === userId) && (
+                                                            <button className="btn btn-sm btn-light" onClick={() => handleDeleteNote(note._id)} >
+                                                                ❌
+                                                            </button>
+                                                        )}
                                                     </div>
 
 
