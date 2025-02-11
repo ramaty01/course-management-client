@@ -160,9 +160,19 @@ const NotesList = ({ role }) => {
                                                                 </div>
                                                             </div>
                                                             <ul className="list-group list-group-flush">
-                                                                <li className="list-group-item d-flex justify-content-between">
-                                                                    <span className="fw-bold">#1</span>
-                                                                    <span className="ms-2">Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1</span>
+                                                                <li className="list-group-item ">
+                                                                    <div className="d-flex justify-content-between">
+                                                                        <span className="fw-bold">#1</span>
+                                                                        <span className="ms-2">Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1</span>
+
+                                                                    </div>
+
+                                                                    <div className="text-start">
+                                                                        <small className="text-muted">Votes: {note.votes}</small>
+                                                                        <small className="text-muted ms-3">✍️ {note.userId.username}</small>
+                                                                        <small className="text-muted ms-3">🕒 {new Date(note.timestamp).toLocaleString()}</small>
+                                                                    </div>
+
                                                                 </li>
                                                                 <li className="list-group-item d-flex justify-content-between">
                                                                     <span className="fw-bold">#2</span>
