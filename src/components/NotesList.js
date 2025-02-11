@@ -104,7 +104,12 @@ const NotesList = ({ role }) => {
                                     <ul className="list-group">
                                         {notes[module._id].map((note, index) => (
                                             <li key={note._id} className="list-group-item">
-                                                <h6 className="text-end fw-bold me-2">📋 #{index + 1}</h6>
+                                                <h6 className="text-end fw-bold me-2">📋 #{index + 1}
+                                                    {/* Show Flag Icon if Note is Flagged */}
+                                                    {(note.isFlagged && role === 'admin') && (
+                                                        <span className="text-danger" title="This note is flagged">🚩 Flagged</span>
+                                                    )}
+                                                </h6>
                                                 <br />
                                                 <p className="mt-1">{note.content}</p>
 
@@ -184,10 +189,7 @@ const NotesList = ({ role }) => {
                                                 </div>
 
 
-                                                {/* Show Flag Icon if Note is Flagged */}
-                                                {note.isFlagged && role === 'admin' && (
-                                                    <span className="text-danger" title="This note is flagged">🚩 Flagged</span>
-                                                )}
+
                                             </li>
                                         ))}
                                     </ul>
