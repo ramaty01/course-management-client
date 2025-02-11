@@ -103,109 +103,112 @@ const NotesList = ({ role }) => {
             <div className="row">
                 {/* Notes Content */}
                 <div className="col-md-9">
-                    <div className="tab-content">
-                        {modules.map((module) => (
-                            <div key={module._id}
-                                className={`tab-pane fade ${activeModule === module._id ? 'show active' : ''}`}
-                            >
-                                {notes[module._id]?.length > 0 ? (
-                                    <ul className="list-group">
-                                        {notes[module._id].map((note, index) => (
-                                            <li key={note._id} className="list-group-item">
-                                                <h6 className="text-end fw-bold me-2">📋 #{index + 1}
-                                                    {/* Show Flag Icon if Note is Flagged */}
-                                                    {(note.isFlagged && role === 'admin') && (
-                                                        <span className="text-danger" title="This note is flagged">🚩 Flagged</span>
-                                                    )}
-                                                </h6>
-                                                <br />
-                                                <p className="mt-1">{note.content}</p>
+                    {modules.length > 0 ? (
+                        <div className="tab-content">
+                            {modules.map((module) => (
+                                <div key={module._id}
+                                    className={`tab-pane fade ${activeModule === module._id ? 'show active' : ''}`}
+                                >
+                                    {notes[module._id]?.length > 0 ? (
+                                        <ul className="list-group">
+                                            {notes[module._id].map((note, index) => (
+                                                <li key={note._id} className="list-group-item">
+                                                    <h6 className="text-end fw-bold me-2">📋 #{index + 1}
+                                                        {/* Show Flag Icon if Note is Flagged */}
+                                                        {(note.isFlagged && role === 'admin') && (
+                                                            <span className="text-danger" title="This note is flagged">🚩 Flagged</span>
+                                                        )}
+                                                    </h6>
+                                                    <br />
+                                                    <p className="mt-1">{note.content}</p>
 
-
-                                                <div className="text-end">
 
                                                     <div className="text-end">
-                                                        {/* Disable button if user already voted */}
-                                                        <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'upvote')}
-                                                            disabled={note.votedUsers.includes(userId)}>👍</button>
 
-                                                        <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'downvote')}
-                                                            disabled={note.votedUsers.includes(userId)}>👎</button>
+                                                        <div className="text-end">
+                                                            {/* Disable button if user already voted */}
+                                                            <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'upvote')}
+                                                                disabled={note.votedUsers.includes(userId)}>👍</button>
 
-                                                        {/* Edit Note Button for Admins or Note Author */}
-                                                        {(role === 'admin' || note.userId?._id === userId) && (
-                                                            <Link to={`/edit-note/${note._id}`} >
-                                                                <button className="btn btn-sm btn-light ms-2">✏️</button>
-                                                            </Link>
-                                                        )}
-                                                        {/* Delete Button for Admins or the Note's Author */}
-                                                        {(role === 'admin' || note.userId === userId) && (
-                                                            <button className="btn btn-sm btn-light ms-2" onClick={() => handleDeleteNote(note._id)} >
-                                                                ❌
-                                                            </button>
-                                                        )}
-                                                    </div>
+                                                            <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'downvote')}
+                                                                disabled={note.votedUsers.includes(userId)}>👎</button>
 
-
-                                                    <small className="text-muted">Votes: {note.votes}</small>
-                                                    <small className="text-muted ms-3">✍️ {note.userId.username}</small>
-                                                    <small className="text-muted ms-3">🕒 {new Date(note.timestamp).toLocaleString()}</small>
-
-                                                </div>
-
-
-                                                {/* Comments section */}
-                                                <div className="">
-
-                                                    <div className="card">
-                                                        <div className="card-body">
-                                                            <h5 className="card-title text-start">💬 Comments
-                                                                <span className="badge rounded-pill text-bg-light ms-2 tf-6">{comments[note._id].length}</span>
-                                                            </h5>
-                                                            <div className="form-floating">
-                                                                <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-                                                                <label htmlFor="floatingTextarea">Comments</label>
-                                                                <div className="text-end mt-2 mb-2">
-                                                                    {/* Edit Note Button for Admins or Note Author */}
-                                                                    <Link to={`/edit-note/${note._id}`} >
-                                                                        <button className="btn btn-sm btn-outline-primary">Add Comments</button>
-                                                                    </Link>
-                                                                </div>
-                                                            </div>
-
-                                                            {/* Display the list of comments */}
-                                                            <ul className="list-group list-group-flush">
-                                                                {comments[note._id]?.map((comment, index) => (
-                                                                    <li key={comment._id} className="list-group-item">
-                                                                        <div className="d-flex justify-content-between">
-                                                                            <span className="fw-bold">#{index + 1}</span>
-                                                                            <span className="ms-2">{comment.content}</span>
-                                                                        </div>
-
-                                                                        <div className="text-start">
-                                                                            <small className="text-muted">Votes: {comment.votes}</small>
-                                                                            <small className="text-muted ms-3">✍️ {comment.userId.username}</small>
-                                                                            <small className="text-muted ms-3">🕒 {new Date(comment.timestamp).toLocaleString()}</small>
-                                                                        </div>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
+                                                            {/* Edit Note Button for Admins or Note Author */}
+                                                            {(role === 'admin' || note.userId?._id === userId) && (
+                                                                <Link to={`/edit-note/${note._id}`} >
+                                                                    <button className="btn btn-sm btn-light ms-2">✏️</button>
+                                                                </Link>
+                                                            )}
+                                                            {/* Delete Button for Admins or the Note's Author */}
+                                                            {(role === 'admin' || note.userId === userId) && (
+                                                                <button className="btn btn-sm btn-light ms-2" onClick={() => handleDeleteNote(note._id)} >
+                                                                    ❌
+                                                                </button>
+                                                            )}
                                                         </div>
+
+
+                                                        <small className="text-muted">Votes: {note.votes}</small>
+                                                        <small className="text-muted ms-3">✍️ {note.userId.username}</small>
+                                                        <small className="text-muted ms-3">🕒 {new Date(note.timestamp).toLocaleString()}</small>
+
                                                     </div>
 
-                                                </div>
+
+                                                    {/* Comments section */}
+                                                    <div className="">
+
+                                                        <div className="card">
+                                                            <div className="card-body">
+                                                                <h5 className="card-title text-start">💬 Comments
+                                                                    <span className="badge rounded-pill text-bg-light ms-2 tf-6">{comments[note._id].length}</span>
+                                                                </h5>
+                                                                <div className="form-floating">
+                                                                    <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                                                                    <label htmlFor="floatingTextarea">Comments</label>
+                                                                    <div className="text-end mt-2 mb-2">
+                                                                        {/* Edit Note Button for Admins or Note Author */}
+                                                                        <Link to={`/edit-note/${note._id}`} >
+                                                                            <button className="btn btn-sm btn-outline-primary">Add Comments</button>
+                                                                        </Link>
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* Display the list of comments */}
+                                                                <ul className="list-group list-group-flush">
+                                                                    {comments[note._id]?.map((comment, index) => (
+                                                                        <li key={comment._id} className="list-group-item">
+                                                                            <div className="d-flex justify-content-between">
+                                                                                <span className="fw-bold">#{index + 1}</span>
+                                                                                <span className="ms-2">{comment.content}</span>
+                                                                            </div>
+
+                                                                            <div className="text-start">
+                                                                                <small className="text-muted">Votes: {comment.votes}</small>
+                                                                                <small className="text-muted ms-3">✍️ {comment.userId.username}</small>
+                                                                                <small className="text-muted ms-3">🕒 {new Date(comment.timestamp).toLocaleString()}</small>
+                                                                            </div>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
 
 
 
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p className="text-muted">No notes available for this module.</p>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p className="text-muted">No notes available for this module.</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>) :
+                        (<p>No course modules</p>)
+                    }
                 </div>
 
                 {/* Vertical Tabs Navigation */}
