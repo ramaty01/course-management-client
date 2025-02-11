@@ -17,11 +17,12 @@ const Breadcrumb = ({ role }) => {
     }, []);
 
     return (
-        <div className="nav-scroller bg-body shadow-sm">
+        <div className="nav-scroller position-sticky bg-body shadow-sm" style={{ top: '0px', zIndex: 1050 }}>
             <nav className="nav container" aria-label="breadcrumb">
                 <ol className="breadcrumb ms-4 mt-3">
-                    <li className="breadcrumb-item"><Link to="/">Courses</Link></li>
-                    <li className="breadcrumb-item active" aria-current="page">CSS 633</li>
+                    {/* <li className="breadcrumb-item"><Link to="/">Courses</Link></li>
+                    <li className="breadcrumb-item active" aria-current="page">CSS 633</li> */}
+                    <li className="breadcrumb-item active" aria-current="page">Courses</li>
                 </ol>
             </nav>
         </div>
