@@ -40,7 +40,7 @@ const Login = ({ setToken, setRole }) => {
         </div>
         <div className="form-floating">
           <input type="password" className="form-control" id="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-            <label htmlFor="password">Username</label>
+            <label htmlFor="password">Password</label>
         </div>
 
         <button className="btn btn-primary w-100 py-2" type="submit">Sign in</button>
