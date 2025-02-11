@@ -85,53 +85,56 @@ const CourseHome = () => {
 
                 {/* Sidebar (Right) */}
                 <div className="col-md-3">
-                    <div className="card p-3">
-                        <h4>Filters</h4>
+                    <div className="position-sticky" style={{ top: '80px' }}>
+                        <div className="card p-3">
+                            <h4>Filters</h4>
 
-                        <div className="mb-3">
-                            <label className="form-label">Semester</label>
-                            <select className="form-select" name="semester" onChange={handleFilterChange}>
-                                <option value="">All</option>
-                                <option value="Fall">Fall</option>
-                                <option value="Winter">Winter</option>
-                                <option value="Spring">Spring</option>
-                                <option value="Summer">Summer</option>
-                            </select>
-                        </div>
+                            <div className="mb-3">
+                                <label className="form-label">Semester</label>
+                                <select className="form-select" name="semester" onChange={handleFilterChange}>
+                                    <option value="">All</option>
+                                    <option value="Fall">Fall</option>
+                                    <option value="Winter">Winter</option>
+                                    <option value="Spring">Spring</option>
+                                    <option value="Summer">Summer</option>
+                                </select>
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="form-label">Year</label>
-                            <input
-                                type="number"
-                                className="form-control"
-                                name="year"
-                                placeholder="Enter year"
-                                onChange={handleFilterChange}
-                            />
-                        </div>
+                            <div className="mb-3">
+                                <label className="form-label">Year</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    name="year"
+                                    placeholder="Enter year"
+                                    onChange={handleFilterChange}
+                                />
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="form-label">Format</label>
-                            <select className="form-select" name="format" onChange={handleFilterChange}>
-                                <option value="">All</option>
-                                <option value="online">Online</option>
-                                <option value="in-person">In-person</option>
-                                <option value="hybrid">Hybrid</option>
-                            </select>
-                        </div>
+                            <div className="mb-3">
+                                <label className="form-label">Format</label>
+                                <select className="form-select" name="format" onChange={handleFilterChange}>
+                                    <option value="">All</option>
+                                    <option value="online">Online</option>
+                                    <option value="in-person">In-person</option>
+                                    <option value="hybrid">Hybrid</option>
+                                </select>
+                            </div>
 
-                        <hr />
+                            <hr />
 
-                        {/* Sorting */}
-                        <h4>Sort By</h4>
-                        <div className="mb-3">
-                            <select className="form-select" onChange={handleSortChange}>
-                                <option value="">None</option>
-                                <option value="name">Course Name (A-Z)</option>
-                                <option value="year">Year (Newest First)</option>
-                            </select>
+                            {/* Sorting */}
+                            <h4>Sort By</h4>
+                            <div className="mb-3">
+                                <select className="form-select" onChange={handleSortChange}>
+                                    <option value="">None</option>
+                                    <option value="name">Course Name (A-Z)</option>
+                                    <option value="year">Year (Newest First)</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
