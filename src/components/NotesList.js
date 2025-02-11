@@ -156,13 +156,11 @@ const NotesList = ({ role }) => {
                                                             <div class="form-floating">
                                                                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
                                                                 <label for="floatingTextarea">Comments</label>
-                                                                <div className="text-end mb-2">
+                                                                <div className="text-end mt-2 mb-2">
                                                                     {/* Edit Note Button for Admins or Note Author */}
-                                                                    {(role === 'admin' || note.userId?._id === userId) && (
-                                                                        <Link to={`/edit-note/${note._id}`} >
-                                                                            <button className="btn btn-sm btn-outline-primary">Add Comments</button>
-                                                                        </Link>
-                                                                    )}
+                                                                    <Link to={`/edit-note/${note._id}`} >
+                                                                        <button className="btn btn-sm btn-outline-primary">Add Comments</button>
+                                                                    </Link>
                                                                 </div>
                                                             </div>
                                                             <ul class="list-group list-group-flush">
