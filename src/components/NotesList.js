@@ -8,6 +8,7 @@ const NotesList = ({ role }) => {
     const { courseId } = useParams();
     const [modules, setModules] = useState([]);
     const [notes, setNotes] = useState({});
+    const [comments, setComments] = useState({});
     const [filteredNotes, setFilteredNotes] = useState([]); // New state for search filtering
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
@@ -37,7 +38,19 @@ const NotesList = ({ role }) => {
                     notesData[module._id] = response.data;
                 }
                 setNotes(notesData);
-                console.log('notes', notes);
+
+                // Fetch comments for each note
+                const commentsData = {};
+                for (const module of moduleData) {
+                    for (const note of notesData[module._id]) {
+                        const commentsResponse = await axios.get(`${REACT_APP_API_URL}/notes/${note._id}/comments`, {
+                            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                        });
+                        commentsData[note._id] = commentsResponse.data;
+                    }
+                }
+                setComments(commentsData);
+
             } catch (err) {
                 setError('Error fetching data');
                 console.error('Error:', err);
@@ -159,7 +172,25 @@ const NotesList = ({ role }) => {
                                                                     </Link>
                                                                 </div>
                                                             </div>
+
+                                                            {/* Display the list of comments */}
                                                             <ul className="list-group list-group-flush">
+                                                                {comments[note._id]?.map((comment, index) => (
+                                                                    <li key={comment._id} className="list-group-item">
+                                                                        <div className="d-flex justify-content-between">
+                                                                            <span className="fw-bold">#{index + 1}</span>
+                                                                            <span className="ms-2">{comment.content}</span>
+                                                                        </div>
+
+                                                                        <div className="text-end">
+                                                                            <small className="text-muted">✍️ {comment.userId.username}</small>
+                                                                            <small className="text-muted ms-3">🕒 {new Date(comment.timestamp).toLocaleString()}</small>
+                                                                        </div>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+
+                                                            {/* <ul className="list-group list-group-flush">
                                                                 <li className="list-group-item ">
                                                                     <div className="d-flex justify-content-between">
                                                                         <span className="fw-bold">#1</span>
@@ -182,7 +213,7 @@ const NotesList = ({ role }) => {
                                                                     <span className="fw-bold">#3</span>
                                                                     <span className="ms-2">Some Comments here, asdfasdf 3</span>
                                                                 </li>
-                                                            </ul>
+                                                            </ul> */}
                                                         </div>
                                                     </div>
 
