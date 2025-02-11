@@ -1,6 +1,6 @@
 import React from "react";
 
-const CommentSection = ({ note, comments, contentMap, handleAddComment, handleContentChange }) => {
+const CommentSection = ({ note, role, userId, comments, contentMap, handleAddComment, handleContentChange, handleDeleteComment }) => {
     return (
         <div className="card">
             <div className="card-body">
@@ -34,6 +34,17 @@ const CommentSection = ({ note, comments, contentMap, handleAddComment, handleCo
                                 <small className="text-muted">Votes: {comment.votes}</small>
                                 <small className="text-muted ms-3">✍️ {comment.userId.username}</small>
                                 <small className="text-muted ms-3">🕒 {new Date(comment.timestamp).toLocaleString()}</small>
+
+                                 {/* Delete Button for Admins or the Comment's Author */}
+                                 {(role === 'admin' || comment.userId._id === userId) && (
+                                    <button className="btn btn-sm btn-light ms-2" onClick={() => handleDeleteComment(comment._id)} >
+                                        ❌
+                                    </button>
+                                )}
+                            </div>
+                            <div className="text-start">
+
+                               
                             </div>
                         </li>
                     ))}

@@ -107,24 +107,23 @@ const NotesList = ({ role }) => {
                 { content: contentMap[noteId] },
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
-    
+
             // After adding the comment, update the comments state for this note
             setComments(prevComments => ({
                 ...prevComments,
                 [noteId]: [...(prevComments[noteId] || []), response.data] // Add the new comment to the list
             }));
-    
+
             // Clear the contentMap for this note after comment submission
             setContentMap(prevState => ({
                 ...prevState,
                 [noteId]: '' // Reset the content of the specific note
             }));
-    
+
         } catch (error) {
             console.error('Failed to add comment:', error);
         }
     };
-    
 
     const handleContentChange = (noteId, value) => {
         setContentMap(prevState => ({
@@ -132,6 +131,26 @@ const NotesList = ({ role }) => {
             [noteId]: value,
         }));
     };
+
+    const handleDeleteComment = async (commentId, noteId) => {
+        if (!window.confirm('Are you sure you want to delete this comment?')) return;
+
+        try {
+            await axios.delete(`${REACT_APP_API_URL}/comments/${commentId}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
+
+            // Update the state correctly by filtering out the deleted comment
+            setComments(prevComments => ({
+                ...prevComments,
+                [noteId]: prevComments[noteId].filter(comment => comment._id !== commentId),
+            }));
+
+        } catch (error) {
+            alert('Failed to delete comment');
+        }
+    };
+
 
 
     if (loading) return <p>Loading notes...</p>;
@@ -158,7 +177,10 @@ const NotesList = ({ role }) => {
                                                     <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={handleDeleteNote}></NoteItem>
 
                                                     {/* Comments section */}
-                                                    <CommentSection note={note} comments={comments} contentMap={contentMap} handleAddComment={handleAddComment} handleContentChange={handleContentChange}></CommentSection>
+                                                    <CommentSection note={note} role={role} userId={userId}
+                                                        comments={comments} contentMap={contentMap} handleAddComment={handleAddComment}
+                                                        handleContentChange={handleContentChange} handleDeleteComment={(commentId) => handleDeleteComment(commentId, note._id)}
+                                                    />
 
                                                 </li>
                                             ))}
@@ -184,9 +206,9 @@ const NotesList = ({ role }) => {
                         </div>
                         <p></p>
                         <h6>Modules</h6>
-                        
+
                         <ModuleTabs modules={modules} activeModule={activeModule} setActiveModule={setActiveModule} />
-             
+
                     </div>
                 </div>
 
