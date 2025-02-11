@@ -118,21 +118,21 @@ const NotesList = ({ role }) => {
 
                                                     <div className="text-end">
                                                         {/* Disable button if user already voted */}
-                                                        <button className="btn btn-sm btn-light ms-3" onClick={() => handleVote(note._id, 'upvote')}
+                                                        <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'upvote')}
                                                             disabled={note.votedUsers.includes(userId)}>👍</button>
 
-                                                        <button className="btn btn-sm btn-light ms-3" onClick={() => handleVote(note._id, 'downvote')}
+                                                        <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'downvote')}
                                                             disabled={note.votedUsers.includes(userId)}>👎</button>
 
                                                         {/* Edit Note Button for Admins or Note Author */}
                                                         {(role === 'admin' || note.userId?._id === userId) && (
                                                             <Link to={`/edit-note/${note._id}`} >
-                                                                <button className="btn btn-sm btn-light ms-3">✏️</button>
+                                                                <button className="btn btn-sm btn-light ms-2">✏️</button>
                                                             </Link>
                                                         )}
                                                         {/* Delete Button for Admins or the Note's Author */}
                                                         {(role === 'admin' || note.userId === userId) && (
-                                                            <button className="btn btn-sm btn-light" onClick={() => handleDeleteNote(note._id)} >
+                                                            <button className="btn btn-sm btn-light ms-2" onClick={() => handleDeleteNote(note._id)} >
                                                                 ❌
                                                             </button>
                                                         )}
