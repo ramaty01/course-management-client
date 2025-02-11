@@ -104,8 +104,8 @@ const NotesList = ({ role }) => {
                                     <ul className="list-group">
                                         {notes[module._id].map((note, index) => (
                                             <li key={note._id} className="list-group-item">
-                                                <h6 className="text-end fw-bold me-2">#{index}</h6>
-                                                <br/>
+                                                <h6 className="text-end fw-bold me-2">#{index + 1}</h6>
+                                                <br />
                                                 <p className="mt-1">{note.content}</p>
 
                                                 <div className="text-end mb-3">
@@ -152,6 +152,10 @@ const NotesList = ({ role }) => {
                                                             <h5 class="card-title text-start">Comments
                                                                 <span class="badge rounded-pill text-bg-primary ms-2 tf-6">99+</span>
                                                             </h5>
+                                                            <div class="form-floating">
+                                                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                                                                <label for="floatingTextarea">Comments</label>
+                                                            </div>
                                                             <ul class="list-group list-group-flush">
                                                                 <li class="list-group-item">An item</li>
                                                                 <li class="list-group-item">A second item</li>
