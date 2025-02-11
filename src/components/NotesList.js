@@ -9,6 +9,8 @@ const NotesList = ({ role }) => {
     const [modules, setModules] = useState([]);
     const [notes, setNotes] = useState({});
     const [comments, setComments] = useState({});
+    // const [content, setContent] = useState('');
+    const [contentMap, setContentMap] = useState({}); // Store content for each note separately
     const [filteredNotes, setFilteredNotes] = useState([]); // New state for search filtering
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
@@ -93,6 +95,41 @@ const NotesList = ({ role }) => {
         }
     };
 
+    const handleAddComment = async (noteId, e) => {
+        e.preventDefault();
+        try {
+            // Add comment via API
+            const response = await axios.post(
+                `${REACT_APP_API_URL}/notes/${noteId}/comments`,
+                { content: contentMap[noteId] },
+                { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+            );
+    
+            // After adding the comment, update the comments state for this note
+            setComments(prevComments => ({
+                ...prevComments,
+                [noteId]: [...(prevComments[noteId] || []), response.data] // Add the new comment to the list
+            }));
+    
+            // Clear the contentMap for this note after comment submission
+            setContentMap(prevState => ({
+                ...prevState,
+                [noteId]: '' // Reset the content of the specific note
+            }));
+    
+        } catch (error) {
+            console.error('Failed to add comment:', error);
+        }
+    };
+    
+
+    const handleContentChange = (noteId, value) => {
+        setContentMap(prevState => ({
+            ...prevState,
+            [noteId]: value,
+        }));
+    };
+
 
     if (loading) return <p>Loading notes...</p>;
     if (error) return <p className="text-danger">{error}</p>;
@@ -164,14 +201,21 @@ const NotesList = ({ role }) => {
                                                                     <span className="badge rounded-pill text-bg-light ms-2 tf-6">{comments[note._id].length}</span>
                                                                 </h5>
                                                                 <div className="form-floating">
-                                                                    <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-                                                                    <label htmlFor="floatingTextarea">Comments</label>
-                                                                    <div className="text-end mt-2 mb-2">
-                                                                        {/* Edit Note Button for Admins or Note Author */}
-                                                                        <Link to={`/edit-note/${note._id}`} >
-                                                                            <button className="btn btn-sm btn-outline-primary">Add Comments</button>
-                                                                        </Link>
-                                                                    </div>
+
+                                                                    <form onSubmit={(e) => handleAddComment(note._id, e)}>
+                                                                        <textarea
+                                                                            className="form-control" placeholder="Leave a comment here" id={note._id}
+                                                                            value={contentMap[note._id] || ''}  // Use contentMap for individual note content
+                                                                            onChange={(e) => handleContentChange(note._id, e.target.value)}  // Update contentMap for specific note
+                                                                            required
+                                                                        ></textarea>
+
+                                                                        <div className="text-end mt-2 mb-2">
+                                                                            <button type="submit" className="btn btn-sm btn-outline-primary">Add Comment</button>
+                                                                        </div>
+                                                                    </form>
+
+
                                                                 </div>
 
                                                                 {/* Display the list of comments */}
