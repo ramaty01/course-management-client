@@ -177,10 +177,45 @@ const NotesList = ({ role }) => {
                                                     <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={handleDeleteNote}></NoteItem>
 
                                                     {/* Comments section */}
-                                                    <CommentSection note={note} role={role} userId={userId}
+                                                    {/* <CommentSection note={note} role={role} userId={userId}
                                                         comments={comments} contentMap={contentMap} handleAddComment={handleAddComment}
                                                         handleContentChange={handleContentChange} handleDeleteComment={(commentId) => handleDeleteComment(commentId, note._id)}
-                                                    />
+                                                    /> */}
+                                                    {/* Accordion for comments */}
+                                                    <div className="accordion accordion-flush mt-2" id={`accordion-${note._id}`}>
+                                                        <div className="accordion-item">
+                                                            <h2 className="accordion-header">
+                                                                <button
+                                                                    className="accordion-button collapsed"
+                                                                    type="button"
+                                                                    data-bs-toggle="collapse"
+                                                                    data-bs-target={`#flush-collapse-${note._id}`}
+                                                                    aria-expanded="false"
+                                                                    aria-controls={`flush-collapse-${note._id}`}
+                                                                >
+                                                                    💬 Comments <span className="badge rounded-pill text-bg-light ms-2">{comments[note._id]?.length || 0}</span>
+                                                                </button>
+                                                            </h2>
+                                                            <div
+                                                                id={`flush-collapse-${note._id}`}
+                                                                className="accordion-collapse collapse"
+                                                                data-bs-parent={`#accordion-${note._id}`}
+                                                            >
+                                                                <div className="accordion-body">
+                                                                    <CommentSection
+                                                                        note={note}
+                                                                        role={role}
+                                                                        userId={userId}
+                                                                        comments={comments || []}
+                                                                        contentMap={contentMap}
+                                                                        handleAddComment={handleAddComment}
+                                                                        handleContentChange={handleContentChange}
+                                                                        handleDeleteComment={(commentId) => handleDeleteComment(commentId, note._id)}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                 </li>
                                             ))}

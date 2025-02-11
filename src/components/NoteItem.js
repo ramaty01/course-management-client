@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const NoteItem = ({ note, index, role, userId, handleVote, handleDeleteNote }) => {
     return (
-        <div>
+        <div className="text-bg-light rounded p-2" style={{ borderRadius: '5rem' }}>
             <h6 className="text-end fw-bold me-2">📋 #{index + 1}
                 {/* Show Flag Icon if Note is Flagged */}
                 {(note.isFlagged && role === 'admin') && (
