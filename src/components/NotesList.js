@@ -182,8 +182,9 @@ const NotesList = ({ role }) => {
                                                                             <span className="ms-2">{comment.content}</span>
                                                                         </div>
 
-                                                                        <div className="text-end">
-                                                                            <small className="text-muted">✍️ {comment.userId.username}</small>
+                                                                        <div className="text-start">
+                                                                            <small className="text-muted">Votes: {comment.votes}</small>
+                                                                            <small className="text-muted ms-3">✍️ {comment.userId.username}</small>
                                                                             <small className="text-muted ms-3">🕒 {new Date(comment.timestamp).toLocaleString()}</small>
                                                                         </div>
                                                                     </li>
