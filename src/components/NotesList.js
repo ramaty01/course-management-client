@@ -96,8 +96,7 @@ const NotesList = ({ role }) => {
                 <div className="col-md-9">
                     <div className="tab-content">
                         {modules.map((module) => (
-                            <div
-                                key={module._id}
+                            <div key={module._id}
                                 className={`tab-pane fade ${activeModule === module._id ? 'show active' : ''}`}
                             >
                                 {notes[module._id]?.length > 0 ? (
