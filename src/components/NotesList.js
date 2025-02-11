@@ -145,7 +145,7 @@ const NotesList = ({ role }) => {
 
 
                                                 {/* Comments section */}
-                                                <div className="text-end">
+                                                <div className="">
 
                                                     <div class="card">
                                                         <div class="card-body">
@@ -155,7 +155,7 @@ const NotesList = ({ role }) => {
                                                             <div class="form-floating">
                                                                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
                                                                 <label for="floatingTextarea">Comments</label>
-                                                                <div className="text-end mb-3">
+                                                                <div className="text-end mb-2">
                                                                     {/* Edit Note Button for Admins or Note Author */}
                                                                     {(role === 'admin' || note.userId?._id === userId) && (
                                                                         <Link to={`/edit-note/${note._id}`} >
@@ -165,11 +165,18 @@ const NotesList = ({ role }) => {
                                                                 </div>
                                                             </div>
                                                             <ul class="list-group list-group-flush">
-                                                                <li class="list-group-item">An item</li>
-                                                                <li class="list-group-item">A second item</li>
-                                                                <li class="list-group-item">A third item</li>
-                                                                <li class="list-group-item">A fourth item</li>
-                                                                <li class="list-group-item">And a fifth one</li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                    <span>#1</span>
+                                                                    <span>Some Comments here, asdfasdf 1</span>
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                    <span>#2</span>
+                                                                    <span>Some Comments here, asdfasdf 2</span>
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                    <span>#3</span>
+                                                                    <span>Some Comments here, asdfasdf 3</span>
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                     </div>
