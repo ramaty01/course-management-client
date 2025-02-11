@@ -160,7 +160,7 @@ const NotesList = ({ role }) => {
                                                     <div className="card">
                                                         <div className="card-body">
                                                             <h5 className="card-title text-start">💬 Comments
-                                                                <span className="badge rounded-pill text-bg-primary ms-2 tf-6">99+</span>
+                                                                <span className="badge rounded-pill text-bg-primary ms-2 tf-6">{comments[note._id].length}</span>
                                                             </h5>
                                                             <div className="form-floating">
                                                                 <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
