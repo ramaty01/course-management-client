@@ -4,22 +4,35 @@ import axios from 'axios';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-const ViewNotes = ({role}) => {
+const ActionButton = ({ label, onClick, disabled, className, icon, type = 'button' }) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    className={`btn ${className} mb-2`}
+    type={type}
+  >
+    {icon && <span>{icon}</span>} {label}
+  </button>
+);
+
+const ViewNotes = ({ role }) => {
   const { moduleId } = useParams();
   const [notes, setNotes] = useState([]);
-  const [filteredNotes, setFilteredNotes] = useState([]); // New state for search filtering
+  const [filteredNotes, setFilteredNotes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const userId = localStorage.getItem('userId'); // Get user ID
+  const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get(`${REACT_APP_API_URL}/modules/${moduleId}/notes`);
+        const response = await axios.get(`${REACT_APP_API_URL}/modules/${moduleId}/notes`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
         setNotes(response.data);
-        setFilteredNotes(response.data); // Initialize filtered notes
+        setFilteredNotes(response.data);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch notes');
@@ -60,12 +73,9 @@ const ViewNotes = ({role}) => {
     }
   };
 
-  // Handle search input change
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchTerm(query);
-    
-    // Filter notes based on search term
     setFilteredNotes(notes.filter(note => note.content.toLowerCase().includes(query)));
   };
 
@@ -75,80 +85,94 @@ const ViewNotes = ({role}) => {
   return (
     <div className="container">
       <h2 className="mb-4">Notes</h2>
+      <div className="d-flex justify-content-end mb-3">
+        {/* Back button on the right */}
+        <ActionButton
+          label="Back to Modules"
+          onClick={() => navigate(-1)}
+          className="btn-outline-secondary"
+          icon="↩"
+        />
+      </div>
 
-      <p></p>
-        {/* Back button to return to the Modules */}
-          <button onClick={() => navigate(-1)}>Back to Modules</button>
-      <p></p>
-
-      <p> </p>
-      {/* Search Bar */}
       <input
         type="text"
         placeholder="Search notes..."
         value={searchTerm}
         onChange={handleSearch}
+        className="form-control mb-3"
       />
 
-      <p> </p>
-      {/* Button to add notes for the module */}
       <Link to={`/add-note/${moduleId}`}>
-          <button className="btn btn-primary mb-3">Add Note</button>
+        <ActionButton
+          label="Add Note"
+          onClick={() => {}}
+          className="btn-primary"
+          icon="➕"
+        />
       </Link>
 
-      
       <div className="row">
-      {filteredNotes.length > 0 ? (
-        filteredNotes.map((note) => (
-          <div key={note._id} className="col-md-6">
-            <div className="card shadow-sm mb-3">
-            <div className="card-body">
-            <p className="card-text">{note.content}</p>
-            <p className="text-muted">Votes: {note.votes}</p>
-            <p className="text-muted">✍️ {note.userId.username}</p>
-            <p className="text-muted">🕒 {note.timestamp}</p>
+        {filteredNotes.length > 0 ? (
+          filteredNotes.map((note) => (
+            <div key={note._id} className="col-md-6">
+              <div className="card shadow-sm mb-3">
+                <div className="card-body">
+                  <p className="card-text">{note.content}</p>
+                  <p className="text-muted">Votes: {note.votes}</p>
+                  <p className="text-muted">✍️ {note.userId.username}</p>
+                  <p className="text-muted">🕒 {note.timestamp}</p>
 
-            {/* Disable button if user already voted */}
-            <button
-              onClick={() => handleVote(note._id, 'upvote')}
-              disabled={note.votedUsers.includes(userId)}
-            >
-              👍 Upvote
-            </button>
+                  <ActionButton
+                    label="👍 Upvote"
+                    onClick={() => handleVote(note._id, 'upvote')}
+                    disabled={note.votedUsers.includes(userId)}
+                    className="btn-outline-primary"
+                  />
 
-            <button
-              onClick={() => handleVote(note._id, 'downvote')}
-              disabled={note.votedUsers.includes(userId)}
-            >
-              👎 Downvote 
-            </button>
+                  <ActionButton
+                    label="👎 Downvote"
+                    onClick={() => handleVote(note._id, 'downvote')}
+                    disabled={note.votedUsers.includes(userId)}
+                    className="btn-outline-danger"
+                  />
 
-            {/* Edit Note Button for Admins or Note Author */}
-            {(role === 'admin' || note.userId?._id === userId) && (
-                <Link to={`/edit-note/${note._id}`} >
-                <button>  ✏️ Edit note </button>
-                </Link>
-              )}
+                  {(role === 'admin' || note.userId?._id === userId) && (
+                    <Link to={`/edit-note/${note._id}`}>
+                      <ActionButton
+                        label="✏️ Edit note"
+                        onClick={() => {}}
+                        className="btn-outline-success"
+                      />
+                    </Link>
+                  )}
 
-            {/* Delete Button for Admins or the Note's Author */}
-            {(role === 'admin' || note.userId === userId) && (
-                <button onClick={() => handleDeleteNote(note._id)} >
-                  ❌ Delete note 
-                </button>
-            )}
+                  {(role === 'admin' || note.userId === userId) && (
+                    <ActionButton
+                      label="❌ Delete note"
+                      onClick={() => handleDeleteNote(note._id)}
+                      className="btn-outline-danger"
+                    />
+                  )}
 
-            {/* Button to View Comments for the Note */}
-            <Link to={`/view-comments/${note._id}`}>
-              <button className="btn btn-outline-secondary">💬 View Comments</button>
-            </Link>
+                  <Link to={`/view-comments/${note._id}`}>
+                    <ActionButton
+                      label="💬 View Comments"
+                      onClick={() => {}}
+                      className="btn-outline-secondary"
+                    />
+                  </Link>
+
+                  {note.isFlagged && role === 'admin' && (
+                    <span className="text-danger" title="This note is flagged">🚩 Flagged</span>
+                  )}
+                </div>
+              </div>
             </div>
-            </div>
-          </div>
-        ))
-        
-      ) : (
-        <p>No notes available.</p>
-      )}
+          ))
+        ) : (
+          <p>No notes available.</p>
+        )}
       </div>
     </div>
   );

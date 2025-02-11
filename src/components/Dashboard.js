@@ -6,87 +6,100 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const Dashboard = ({ role }) => {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Fetch all courses from the backend
   useEffect(() => {
-    axios
-      .get(`${REACT_APP_API_URL}/courses`)
-      .then((response) => setCourses(response.data))
-      .catch((error) => console.error('Error fetching courses:', error));
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get(`${REACT_APP_API_URL}/courses`);
+        setCourses(response.data);
+      } catch {
+        setError('Failed to fetch courses. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
   }, []);
 
-  // Handle user sign out
   const handleSignOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('userId');
+    localStorage.clear();
     navigate(0);
   };
 
   const handleDeleteCourse = async (courseId) => {
-    if (!window.confirm('Are you sure you want to delete this course?')) return;
-
-    try {
-      await axios.delete(`${REACT_APP_API_URL}/courses/${courseId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-
-      setCourses(courses.filter((course) => course._id !== courseId));
-    } catch (error) {
-      alert('Failed to delete course');
+    if (window.confirm('Are you sure you want to delete this course?')) {
+      try {
+        await axios.delete(`${REACT_APP_API_URL}/courses/${courseId}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        setCourses(courses.filter((course) => course._id !== courseId));
+      } catch {
+        alert('Failed to delete course.');
+      }
     }
   };
+
+  if (loading) return <p>Loading courses...</p>;
+  if (error) return <p className="text-danger">{error}</p>;
 
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Dashboard</h1>
-        <button onClick={handleSignOut} className="btn btn-danger">Sign Out</button>
+        <div>
+          <button onClick={handleSignOut} className="btn btn-danger">
+            Sign Out
+          </button>
+        </div>
       </div>
 
-      {/* Admin can add new courses */}
       {role === 'admin' && (
         <Link to="/add-course">
-          <button  className="btn btn-primary mb-4">Add Course</button>
+          <button className="btn btn-primary mb-4">Add Course</button>
         </Link>
       )}
 
       <h2>Courses</h2>
 
-      {/* Display courses dynamically */}
       {courses.length > 0 ? (
-        courses.map((course) => (
-          <div key={course._id} className="col-md-4">
-            <div className="card shadow-sm mb-3">
-              <div className="card-body">
-                <h5 className="card-title">{course.name}</h5>
-                <p className="card-text">{course.description}</p>
-                <p className="text-muted"><strong>Semester:</strong> {course.semester} {course.year}</p>
-                <p className="text-muted"><strong>Format:</strong> {course.format}</p>
-
-                {/* Button to View Modules for this course */}
-                <Link to={`/view-modules/${course._id}`}>
-                  <button> 📖 View Modules </button>
-                </Link>
-
-                {/* Edit Button for Admins */}
-                {role === 'admin' && (
+        <div className="row">
+          {courses.map((course) => (
+            <div key={course._id} className="col-md-4">
+              <div className="card shadow-sm mb-3">
+                <div className="card-body">
+                  <h5 className="card-title">{course.name}</h5>
+                  <p className="card-text">{course.description}</p>
+                  <p className="text-muted">
+                    <strong>Semester:</strong> {course.semester} {course.year}
+                  </p>
+                  <p className="text-muted">
+                    <strong>Format:</strong> {course.format}
+                  </p>
+                  <Link to={`/view-modules/${course._id}`}>
+                    <button className="btn btn-outline-primary me-2">📖 View Modules</button>
+                  </Link>
+                  {role === 'admin' && (
+                    <>
                       <Link to={`/edit-course/${course._id}`}>
-                        <button> ✏️ Edit Course </button>
+                        <button className="btn btn-outline-success me-2">✏️ Edit</button>
                       </Link>
-                    )}
-
-                {/* Delete Button for Admins */}
-                {role === 'admin' && (
-                <button onClick={() => handleDeleteCourse(course._id)} >
-                      ❌ Delete Course 
-                </button>
+                      <button
+                        onClick={() => handleDeleteCourse(course._id)}
+                        className="btn btn-outline-danger"
+                      >
+                        ❌ Delete
+                      </button>
+                    </>
                   )}
+                </div>
               </div>
             </div>
-          </div>
-        ))
+          ))}
+        </div>
       ) : (
         <p>No courses available.</p>
       )}
