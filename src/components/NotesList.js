@@ -37,6 +37,7 @@ const NotesList = ({ role }) => {
                     notesData[module._id] = response.data;
                 }
                 setNotes(notesData);
+                console.log('notes', notes);
             } catch (err) {
                 setError('Error fetching data');
                 console.error('Error:', err);
@@ -58,6 +59,7 @@ const NotesList = ({ role }) => {
 
             setNotes(notes.filter(note => note._id !== noteId));
             navigate(0);
+
         } catch (error) {
             alert('Failed to delete note');
         }
@@ -84,13 +86,7 @@ const NotesList = ({ role }) => {
 
     return (
         <div className="container mt-4">
-            <h2>Course Notes</h2>
-            <p></p>
-            {/* Back button to return to the Modules */}
-            <div className="text-end">
-                <button className="btn btn-sm btn-light" onClick={() => navigate(-1)}>🔙</button>
-            </div>
-            <p></p>
+
             <div className="row">
                 {/* Notes Content */}
                 <div className="col-md-9">
@@ -148,14 +144,14 @@ const NotesList = ({ role }) => {
                                                 {/* Comments section */}
                                                 <div className="">
 
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title text-start">💬 Comments
-                                                                <span class="badge rounded-pill text-bg-primary ms-2 tf-6">99+</span>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <h5 className="card-title text-start">💬 Comments
+                                                                <span className="badge rounded-pill text-bg-primary ms-2 tf-6">99+</span>
                                                             </h5>
-                                                            <div class="form-floating">
-                                                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-                                                                <label for="floatingTextarea">Comments</label>
+                                                            <div className="form-floating">
+                                                                <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                                                                <label htmlFor="floatingTextarea">Comments</label>
                                                                 <div className="text-end mt-2 mb-2">
                                                                     {/* Edit Note Button for Admins or Note Author */}
                                                                     <Link to={`/edit-note/${note._id}`} >
@@ -163,16 +159,16 @@ const NotesList = ({ role }) => {
                                                                     </Link>
                                                                 </div>
                                                             </div>
-                                                            <ul class="list-group list-group-flush">
-                                                                <li class="list-group-item d-flex justify-content-between">
+                                                            <ul className="list-group list-group-flush">
+                                                                <li className="list-group-item d-flex justify-content-between">
                                                                     <span className="fw-bold">#1</span>
                                                                     <span className="ms-2">Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1</span>
                                                                 </li>
-                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                <li className="list-group-item d-flex justify-content-between">
                                                                     <span className="fw-bold">#2</span>
                                                                     <span className="ms-2">Some Comments here, asdfasdf 2</span>
                                                                 </li>
-                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                <li className="list-group-item d-flex justify-content-between">
                                                                     <span className="fw-bold">#3</span>
                                                                     <span className="ms-2">Some Comments here, asdfasdf 3</span>
                                                                 </li>
@@ -197,17 +193,27 @@ const NotesList = ({ role }) => {
 
                 {/* Vertical Tabs Navigation */}
                 <div className="col-md-3">
-                    <div className="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-                        {modules.map((module) => (
-                            <button
-                                key={module._id}
-                                className={`nav-link ${activeModule === module._id ? 'active' : ''}`}
-                                onClick={() => setActiveModule(module._id)}
-                                role="tab"
-                            >
-                                {module.name}
-                            </button>
-                        ))}
+                    <div className="position-sticky" style={{ top: '60px' }}>
+                        <h2>Course Notes <span className="badge rounded-pill text-bg-primary fs-6">{notes.length}</span></h2>
+                        <p></p>
+                        {/* Back button to return to the Modules */}
+                        <div className="text-end">
+                            <button className="btn btn-sm btn-light" onClick={() => navigate(-1)}>🔙</button>
+                        </div>
+                        <p></p>
+                        <h6>Modules</h6>
+                        <div className="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                            {modules.map((module) => (
+                                <button
+                                    key={module._id}
+                                    className={`nav-link ${activeModule === module._id ? 'active' : ''}`}
+                                    onClick={() => setActiveModule(module._id)}
+                                    role="tab"
+                                >
+                                    {module.name}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
