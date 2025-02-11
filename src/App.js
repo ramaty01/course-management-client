@@ -18,6 +18,7 @@ import EditComment from './components/EditComment';
 import Header from './components/Header';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Breadcrumb from './components/common/Breadcrumb';
+import NotesList from './components/NotesList';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -51,6 +52,7 @@ function App() {
         <Route path="/edit-module/:moduleId" element={<EditModule />} />
         <Route path="/add-note/:moduleId" element={<AddNote />} />
         <Route path="/view-notes/:moduleId" element={<ViewNotes role={role}/>} />
+        <Route path="/courses/:courseId/notes/" element={<NotesList role={role}/>} />
         <Route path="/edit-note/:noteId" element={<EditNote />} />
         <Route path="/view-comments/:courseNoteId" element={<ViewComments role={role} />} />
         <Route path="/add-comment/:courseNoteId" element={<AddComment />} />

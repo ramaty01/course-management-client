@@ -44,7 +44,7 @@ const CourseHome = () => {
                         <div className="row">
                             {filteredCourses.map((course) => (
                                 <div key={course._id} className="col-md-6">
-                                    <Link to={`/view-modules/${course._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Link to={`/courses/${course._id}/notes`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                         <div className="card border-info shadow-sm mb-3" style={{ cursor: 'pointer' }}>
                                             <h6 className="card-header">{course.name}</h6>
                                             <div className="card-body">
