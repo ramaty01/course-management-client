@@ -88,7 +88,7 @@ const NotesList = ({ role }) => {
             <p></p>
             {/* Back button to return to the Modules */}
             <div className="text-end">
-                <button className="btn btn-sm btn-light" onClick={() => navigate(-1)}>Back</button>
+                <button className="btn btn-sm btn-light" onClick={() => navigate(-1)}>🔙</button>
             </div>
             <p></p>
             <div className="row">
