@@ -102,9 +102,11 @@ const NotesList = ({ role }) => {
                             >
                                 {notes[module._id]?.length > 0 ? (
                                     <ul className="list-group">
-                                        {notes[module._id].map((note) => (
+                                        {notes[module._id].map((note, index) => (
                                             <li key={note._id} className="list-group-item">
-                                                <p>{note.content}</p>
+                                                <h6 className="text-end fw-bold me-2">#{index}</h6>
+                                                <br/>
+                                                <p className="mt-1">{note.content}</p>
 
                                                 <div className="text-end mb-3">
                                                     {/* Edit Note Button for Admins or Note Author */}
