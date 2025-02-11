@@ -48,10 +48,12 @@ const CourseHome = () => {
                                         <div className="card border-info shadow-sm mb-3" style={{ cursor: 'pointer' }}>
                                             <h6 class="card-header">{course.name}</h6>
                                             <div className="card-body">
-                                                {/* <h5 className="card-title">{course.name}</h5> */}
                                                 <p className="card-text">{course.description}</p>
-                                                <p className="text-muted"><strong>Semester:</strong> {course.semester} {course.year}</p>
-                                                <p className="text-muted"><strong>Format:</strong> {course.format}</p>
+                                                <p className="text-muted">
+                                                    <strong>Semester:</strong> {course.semester} {course.year}
+                                                    <strong className="ms-3">Format:</strong> {course.format}
+                                                </p>
+                                                <p className="text-muted"></p>
                                             </div>
                                         </div>
                                     </Link>
