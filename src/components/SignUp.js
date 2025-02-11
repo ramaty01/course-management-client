@@ -33,40 +33,7 @@ const SignUp = () => {
   };
 
   return (
-    // <div>
-    //   <h2>Sign Up</h2>
-    //   <form onSubmit={handleSignUp}>
-    //     <input
-    //       type="email"
-    //       placeholder="Email"
-    //       value={email}
-    //       onChange={(e) => setEmail(e.target.value)}
-    //       required
-    //     />
-    //     <input
-    //       type="text"
-    //       placeholder="Username"
-    //       value={username}
-    //       onChange={(e) => setUsername(e.target.value)}
-    //       required
-    //     />
-    //     <input
-    //       type="password"
-    //       placeholder="Password"
-    //       value={password}
-    //       onChange={(e) => setPassword(e.target.value)}
-    //       required
-    //     />
-    //     <input
-    //       type="password"
-    //       placeholder="Confirm Password"
-    //       value={confirmPassword}
-    //       onChange={(e) => setConfirmPassword(e.target.value)}
-    //       required
-    //     />
-    //     <button type="submit">Sign Up</button>
-    //   </form>
-    // </div>
+
     <div className="form-signin w-100 m-auto">
       <img className="mb-4" src={logo} alt="Logo" width="72" height="57"></img>
       <h1 className="h3 mb-3 fw-normal">Sign up new account</h1>
