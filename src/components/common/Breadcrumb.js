@@ -22,7 +22,7 @@ const Breadcrumb = ({ role }) => {
                 <ol className="breadcrumb ms-4 mt-3">
                     {/* <li className="breadcrumb-item"><Link to="/">Courses</Link></li>
                     <li className="breadcrumb-item active" aria-current="page">CSS 633</li> */}
-                    <li className="breadcrumb-item active" aria-current="page">Courses</li>
+                    <li className="breadcrumb-item active" aria-current="page"><Link to="/">Courses</Link></li>
                 </ol>
             </nav>
         </div>

@@ -37,7 +37,7 @@ const CourseHome = () => {
             <div className="row">
                 {/* Course List (Left) */}
                 <div className="col-md-9">
-                    <h2>Courses <span class="badge rounded-pill text-bg-primary fs-6">{filteredCourses.length}</span>
+                    <h2>Courses <span className="badge rounded-pill text-bg-primary fs-6">{filteredCourses.length}</span>
                     </h2>
 
                     {filteredCourses.length > 0 ? (
@@ -46,7 +46,7 @@ const CourseHome = () => {
                                 <div key={course._id} className="col-md-6">
                                     <Link to={`/view-modules/${course._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                         <div className="card border-info shadow-sm mb-3" style={{ cursor: 'pointer' }}>
-                                            <h6 class="card-header">{course.name}</h6>
+                                            <h6 className="card-header">{course.name}</h6>
                                             <div className="card-body">
                                                 <p className="card-text">{course.description}</p>
                                                 <p className="text-muted">
