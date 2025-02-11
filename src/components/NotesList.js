@@ -106,11 +106,11 @@ const NotesList = ({ role }) => {
                                             <li key={note._id} className="list-group-item">
                                                 <p>{note.content}</p>
 
-                                                <div className="text-end">
+                                                <div className="text-end mb-3">
                                                     {/* Edit Note Button for Admins or Note Author */}
                                                     {(role === 'admin' || note.userId?._id === userId) && (
                                                         <Link to={`/edit-note/${note._id}`} >
-                                                            <button className="btn btn-outline-warning">✏️ Edit</button>
+                                                            <button className="btn btn-outline-warning">✏️ Edit Note</button>
                                                         </Link>
                                                     )}
                                                 </div>
@@ -121,13 +121,6 @@ const NotesList = ({ role }) => {
                                                         ❌ Delete note
                                                     </button>
                                                 )}
-
-                                                <div className="text-end">
-                                                    {/* Button to View Comments for the Note */}
-                                                    <Link to={`/view-comments/${note._id}`}>
-                                                        <button className="btn btn-outline-secondary">💬 View Comments </button>
-                                                    </Link>
-                                                </div>
 
                                                 <div className="text-end">
 
@@ -145,6 +138,27 @@ const NotesList = ({ role }) => {
                                                     <small className="text-muted">Votes: {note.votes}</small>
                                                     <small className="text-muted ms-3">✍️ {note.userId.username}</small>
                                                     <small className="text-muted ms-3">🕒 {new Date(note.timestamp).toLocaleString()}</small>
+
+                                                </div>
+
+
+                                                {/* Comments section */}
+                                                <div className="text-end">
+
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title text-start">Comments
+                                                                <span class="badge rounded-pill text-bg-primary ms-2 tf-6">99+</span>
+                                                            </h5>
+                                                            <ul class="list-group list-group-flush">
+                                                                <li class="list-group-item">An item</li>
+                                                                <li class="list-group-item">A second item</li>
+                                                                <li class="list-group-item">A third item</li>
+                                                                <li class="list-group-item">A fourth item</li>
+                                                                <li class="list-group-item">And a fifth one</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
 
                                                 </div>
 
