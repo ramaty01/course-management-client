@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import NoteItem from "./NoteItem";
+import CommentSection from "./CommentSection";
+import ModuleTabs from "./ModuleTabs";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -150,97 +153,12 @@ const NotesList = ({ role }) => {
                                         <ul className="list-group">
                                             {notes[module._id].map((note, index) => (
                                                 <li key={note._id} className="list-group-item">
-                                                    <h6 className="text-end fw-bold me-2">📋 #{index + 1}
-                                                        {/* Show Flag Icon if Note is Flagged */}
-                                                        {(note.isFlagged && role === 'admin') && (
-                                                            <span className="text-danger" title="This note is flagged">🚩 Flagged</span>
-                                                        )}
-                                                    </h6>
-                                                    <br />
-                                                    <p className="mt-1">{note.content}</p>
 
-
-                                                    <div className="text-end">
-
-                                                        <div className="text-end">
-                                                            {/* Disable button if user already voted */}
-                                                            <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'upvote')}
-                                                                disabled={note.votedUsers.includes(userId)}>👍</button>
-
-                                                            <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'downvote')}
-                                                                disabled={note.votedUsers.includes(userId)}>👎</button>
-
-                                                            {/* Edit Note Button for Admins or Note Author */}
-                                                            {(role === 'admin' || note.userId?._id === userId) && (
-                                                                <Link to={`/edit-note/${note._id}`} >
-                                                                    <button className="btn btn-sm btn-light ms-2">✏️</button>
-                                                                </Link>
-                                                            )}
-                                                            {/* Delete Button for Admins or the Note's Author */}
-                                                            {(role === 'admin' || note.userId === userId) && (
-                                                                <button className="btn btn-sm btn-light ms-2" onClick={() => handleDeleteNote(note._id)} >
-                                                                    ❌
-                                                                </button>
-                                                            )}
-                                                        </div>
-
-
-                                                        <small className="text-muted">Votes: {note.votes}</small>
-                                                        <small className="text-muted ms-3">✍️ {note.userId.username}</small>
-                                                        <small className="text-muted ms-3">🕒 {new Date(note.timestamp).toLocaleString()}</small>
-
-                                                    </div>
-
+                                                    {/* Notes content section */}
+                                                    <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={handleDeleteNote}></NoteItem>
 
                                                     {/* Comments section */}
-                                                    <div className="">
-
-                                                        <div className="card">
-                                                            <div className="card-body">
-                                                                <h5 className="card-title text-start">💬 Comments
-                                                                    <span className="badge rounded-pill text-bg-light ms-2 tf-6">{comments[note._id].length}</span>
-                                                                </h5>
-                                                                <div className="form-floating">
-
-                                                                    <form onSubmit={(e) => handleAddComment(note._id, e)}>
-                                                                        <textarea
-                                                                            className="form-control" placeholder="Leave a comment here" id={note._id}
-                                                                            value={contentMap[note._id] || ''}  // Use contentMap for individual note content
-                                                                            onChange={(e) => handleContentChange(note._id, e.target.value)}  // Update contentMap for specific note
-                                                                            required
-                                                                        ></textarea>
-
-                                                                        <div className="text-end mt-2 mb-2">
-                                                                            <button type="submit" className="btn btn-sm btn-outline-primary">Add Comment</button>
-                                                                        </div>
-                                                                    </form>
-
-
-                                                                </div>
-
-                                                                {/* Display the list of comments */}
-                                                                <ul className="list-group list-group-flush">
-                                                                    {comments[note._id]?.map((comment, index) => (
-                                                                        <li key={comment._id} className="list-group-item">
-                                                                            <div className="d-flex justify-content-between">
-                                                                                <span className="fw-bold">#{index + 1}</span>
-                                                                                <span className="ms-2">{comment.content}</span>
-                                                                            </div>
-
-                                                                            <div className="text-start">
-                                                                                <small className="text-muted">Votes: {comment.votes}</small>
-                                                                                <small className="text-muted ms-3">✍️ {comment.userId.username}</small>
-                                                                                <small className="text-muted ms-3">🕒 {new Date(comment.timestamp).toLocaleString()}</small>
-                                                                            </div>
-                                                                        </li>
-                                                                    ))}
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-
+                                                    <CommentSection note={note} comments={comments} contentMap={contentMap} handleAddComment={handleAddComment} handleContentChange={handleContentChange}></CommentSection>
 
                                                 </li>
                                             ))}
@@ -266,18 +184,9 @@ const NotesList = ({ role }) => {
                         </div>
                         <p></p>
                         <h6>Modules</h6>
-                        <div className="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-                            {modules.map((module) => (
-                                <button
-                                    key={module._id}
-                                    className={`nav-link ${activeModule === module._id ? 'active' : ''}`}
-                                    onClick={() => setActiveModule(module._id)}
-                                    role="tab"
-                                >
-                                    {module.name}
-                                </button>
-                            ))}
-                        </div>
+                        
+                        <ModuleTabs modules={modules} activeModule={activeModule} setActiveModule={setActiveModule} />
+             
                     </div>
                 </div>
 
