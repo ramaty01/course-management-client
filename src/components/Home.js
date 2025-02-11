@@ -26,8 +26,8 @@ const CourseHome = () => {
         const { name, value } = e.target;
         const newFilters = { ...filters, [name]: value };
         setFilters(newFilters);
-        
-        let filtered = courses.filter(course => 
+
+        let filtered = courses.filter(course =>
             (newFilters.semester === "" || course.semester === newFilters.semester) &&
             (newFilters.year === "" || course.year === parseInt(newFilters.year)) &&
             (newFilters.format === "" || course.format === newFilters.format)
@@ -57,25 +57,24 @@ const CourseHome = () => {
             <div className="row">
                 {/* Course List (Left) */}
                 <div className="col-md-9">
-                    <h2>Courses</h2>
+                    <h2>Courses <span class="badge rounded-pill text-bg-primary fs-6">{filteredCourses.length}</span>
+                    </h2>
 
                     {filteredCourses.length > 0 ? (
                         <div className="row">
                             {filteredCourses.map((course) => (
-                                <div key={course._id} className="col-md-4">
-                                    <div className="card shadow-sm mb-3">
-                                        <div className="card-body">
-                                            <h5 className="card-title">{course.name}</h5>
-                                            <p className="card-text">{course.description}</p>
-                                            <p className="text-muted"><strong>Semester:</strong> {course.semester} {course.year}</p>
-                                            <p className="text-muted"><strong>Format:</strong> {course.format}</p>
-
-                                            {/* Button to View Modules for this course */}
-                                            <Link to={`/view-modules/${course._id}`}>
-                                                <button className="btn btn-primary"> 📖 View Modules </button>
-                                            </Link>
+                                <div key={course._id} className="col-md-6">
+                                    <Link to={`/view-modules/${course._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <div className="card border-info shadow-sm mb-3" style={{ cursor: 'pointer' }}>
+                                            <h6 class="card-header">{course.name}</h6>
+                                            <div className="card-body">
+                                                {/* <h5 className="card-title">{course.name}</h5> */}
+                                                <p className="card-text">{course.description}</p>
+                                                <p className="text-muted"><strong>Semester:</strong> {course.semester} {course.year}</p>
+                                                <p className="text-muted"><strong>Format:</strong> {course.format}</p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 </div>
                             ))}
                         </div>
@@ -88,7 +87,7 @@ const CourseHome = () => {
                 <div className="col-md-3">
                     <div className="card p-3">
                         <h4>Filters</h4>
-                        
+
                         <div className="mb-3">
                             <label className="form-label">Semester</label>
                             <select className="form-select" name="semester" onChange={handleFilterChange}>
