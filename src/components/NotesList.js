@@ -104,7 +104,7 @@ const NotesList = ({ role }) => {
                                     <ul className="list-group">
                                         {notes[module._id].map((note, index) => (
                                             <li key={note._id} className="list-group-item">
-                                                <h6 className="text-end fw-bold me-2">#{index + 1}</h6>
+                                                <h6 className="text-end fw-bold me-2">📋 #{index + 1}</h6>
                                                 <br />
                                                 <p className="mt-1">{note.content}</p>
 
@@ -149,7 +149,7 @@ const NotesList = ({ role }) => {
 
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h5 class="card-title text-start">Comments
+                                                            <h5 class="card-title text-start">💬 Comments
                                                                 <span class="badge rounded-pill text-bg-primary ms-2 tf-6">99+</span>
                                                             </h5>
                                                             <div class="form-floating">
@@ -166,15 +166,15 @@ const NotesList = ({ role }) => {
                                                             </div>
                                                             <ul class="list-group list-group-flush">
                                                                 <li class="list-group-item d-flex justify-content-between">
-                                                                    <span>#1</span>
+                                                                    <span className="fw-bold">#1</span>
                                                                     <span className="ms-2">Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1, Some Comments here, asdfasdf 1</span>
                                                                 </li>
                                                                 <li class="list-group-item d-flex justify-content-between">
-                                                                    <span>#2</span>
+                                                                    <span className="fw-bold">#2</span>
                                                                     <span className="ms-2">Some Comments here, asdfasdf 2</span>
                                                                 </li>
                                                                 <li class="list-group-item d-flex justify-content-between">
-                                                                    <span>#3</span>
+                                                                    <span className="fw-bold">#3</span>
                                                                     <span className="ms-2">Some Comments here, asdfasdf 3</span>
                                                                 </li>
                                                             </ul>
