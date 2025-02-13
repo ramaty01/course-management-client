@@ -8,7 +8,7 @@ const EditNote = () => {
   const { noteId } = useParams();
   const navigate = useNavigate();
   const [note, setNote] = useState({ content: '' });
-
+// test
   useEffect(() => {
     axios
       .get(`${REACT_APP_API_URL}/notes`)
