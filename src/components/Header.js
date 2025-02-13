@@ -10,7 +10,7 @@ const Header = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('userId');
-        navigate(0);
+        window.location.href = '/';
     };
 
     return (

@@ -25,13 +25,13 @@ const NoteItem = ({ note, index, role, userId, handleVote, handleDeleteNote }) =
                         disabled={note.votedUsers.includes(userId)}>👎</button>
 
                     {/* Edit Note Button for Admins or Note Author */}
-                    {(role === 'admin' || note.userId?._id === userId) && (
+                    {(role === 'admin' || role === 'teacher' || note.userId?._id === userId) && (
                         <Link to={`/edit-note/${note._id}`} >
                             <button className="btn btn-sm btn-light ms-2">✏️</button>
                         </Link>
                     )}
                     {/* Delete Button for Admins or the Note's Author */}
-                    {(role === 'admin' || note.userId === userId) && (
+                    {(role === 'admin' || role === 'teacher' || note.userId?._id === userId) && (
                         <button className="btn btn-sm btn-light ms-2" onClick={() => handleDeleteNote(note._id)} >
                             ❌
                         </button>

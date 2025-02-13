@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import NoteItem from "./NoteItem";
@@ -20,6 +20,7 @@ const NotesList = ({ role }) => {
     const [error, setError] = useState(null);
     const [activeModule, setActiveModule] = useState(null);
     const userId = localStorage.getItem('userId'); // Get user ID
+    const [newNoteContent, setNewNoteContent] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -67,7 +68,34 @@ const NotesList = ({ role }) => {
         fetchModulesAndNotes();
     }, [courseId]);
 
-    const handleDeleteNote = async (noteId) => {
+    const handleAddNote = async (e) => {
+        e.preventDefault();
+        if (!newNoteContent.trim() || !activeModule) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(`${REACT_APP_API_URL}/modules/${activeModule}/notes`, 
+                { content: newNoteContent }, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            // Fetch updated notes to ensure userId and role are populated
+            const response = await axios.get(`${REACT_APP_API_URL}/modules/${activeModule}/notes`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            setNotes(prevNotes => ({
+                ...prevNotes,
+                [activeModule]: response.data, // Replace with fresh data including username
+            }));
+
+            setNewNoteContent('');
+        } catch (error) {
+            console.error('Failed to add note:', error);
+        }
+    };
+
+    const handleDeleteNote = async (noteId, moduleId) => {
         if (!window.confirm('Are you sure you want to delete this note?')) return;
 
         try {
@@ -75,9 +103,15 @@ const NotesList = ({ role }) => {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
 
-            setNotes(notes.filter(note => note._id !== noteId));
-            navigate(0);
+            // Fetch updated notes to ensure userId and role are populated
+            const response = await axios.get(`${REACT_APP_API_URL}/modules/${activeModule}/notes`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
 
+            setNotes(prevNotes => ({
+                ...prevNotes,
+                [activeModule]: response.data, // Replace with fresh data including username
+            }));
         } catch (error) {
             alert('Failed to delete note');
         }
@@ -85,14 +119,50 @@ const NotesList = ({ role }) => {
 
     const handleVote = async (noteId, voteType) => {
         try {
-            const response = await axios.put(
+            await axios.put(
                 `${REACT_APP_API_URL}/notes/${noteId}/vote`,
                 { voteType },
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
-            setNotes(notes.map(note => (note._id === noteId ? response.data : note)));
+            // Fetch updated notes to ensure userId and role are populated
+            const response = await axios.get(`${REACT_APP_API_URL}/modules/${activeModule}/notes`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
 
-            navigate(0);
+            setNotes(prevNotes => ({
+                ...prevNotes,
+                [activeModule]: response.data, // Replace with fresh data including username
+            }));
+        } catch (error) {
+            alert(error.response?.data?.error || 'Failed to vote');
+        }
+    };
+
+    const handleCommentVote = async (commentId, voteType, noteId) => {
+        try {
+            await axios.put(
+                `${REACT_APP_API_URL}/comments/${commentId}/vote`,
+                { voteType },
+                { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+            );
+            // Fetch updated notes to ensure userId and role are populated
+            const response = await axios.get(`${REACT_APP_API_URL}/notes/${noteId}/comments`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
+
+            // After adding the comment, update the comments state for this note
+            setComments(prevComments => ({
+                ...prevComments,
+                [noteId]: response.data // Add the new comment to the list
+            }));
+
+             // Clear the contentMap for this note after comment submission
+             setContentMap(prevState => ({
+                ...prevState,
+                [noteId]: '' // Reset the content of the specific note
+            }));
+
+            
         } catch (error) {
             alert(error.response?.data?.error || 'Failed to vote');
         }
@@ -102,16 +172,21 @@ const NotesList = ({ role }) => {
         e.preventDefault();
         try {
             // Add comment via API
-            const response = await axios.post(
+            await axios.post(
                 `${REACT_APP_API_URL}/notes/${noteId}/comments`,
                 { content: contentMap[noteId] },
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
 
+            // Fetch updated notes to ensure userId and role are populated
+            const response = await axios.get(`${REACT_APP_API_URL}/notes/${noteId}/comments`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
+
             // After adding the comment, update the comments state for this note
             setComments(prevComments => ({
                 ...prevComments,
-                [noteId]: [...(prevComments[noteId] || []), response.data] // Add the new comment to the list
+                [noteId]: response.data // Add the new comment to the list
             }));
 
             // Clear the contentMap for this note after comment submission
@@ -174,7 +249,7 @@ const NotesList = ({ role }) => {
                                                 <li key={note._id} className="list-group-item">
 
                                                     {/* Notes content section */}
-                                                    <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={handleDeleteNote}></NoteItem>
+                                                    <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={() => handleDeleteNote(note._id, module._id)} ></NoteItem>
 
                                                     {/* Comments section */}
                                                     {/* <CommentSection note={note} role={role} userId={userId}
@@ -210,6 +285,7 @@ const NotesList = ({ role }) => {
                                                                         contentMap={contentMap}
                                                                         handleAddComment={handleAddComment}
                                                                         handleContentChange={handleContentChange}
+                                                                        handleCommentVote={handleCommentVote}
                                                                         handleDeleteComment={(commentId) => handleDeleteComment(commentId, note._id)}
                                                                     />
                                                                 </div>
@@ -243,7 +319,22 @@ const NotesList = ({ role }) => {
                         <h6>Modules</h6>
 
                         <ModuleTabs modules={modules} activeModule={activeModule} setActiveModule={setActiveModule} />
-
+                        {/* Add Note Form (Right-hand Side) */}
+                        
+                        <div className="mt-4">
+                            <h5>Add a Note</h5>
+                            <form onSubmit={handleAddNote}>
+                                <textarea 
+                                    className="form-control mb-2" 
+                                    placeholder="Write your note here..." 
+                                    value={newNoteContent} 
+                                    onChange={(e) => setNewNoteContent(e.target.value)}
+                                    required 
+                                ></textarea>
+                                <button type="submit" className="btn btn-primary w-100">➕ Add Note</button>
+                            </form>
+                        </div>
+                        
                     </div>
                 </div>
 
