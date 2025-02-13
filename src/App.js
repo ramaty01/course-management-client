@@ -19,6 +19,7 @@ import Header from './components/Header';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Breadcrumb from './components/common/Breadcrumb';
 import NotesList from './components/NotesList';
+import AdminPage from './components/AdminPage';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -57,6 +58,7 @@ function App() {
         <Route path="/view-comments/:courseNoteId" element={<ViewComments role={role} />} />
         <Route path="/add-comment/:courseNoteId" element={<AddComment />} />
         <Route path="/edit-comment/:commentId" element={<EditComment />} />
+        <Route path="/admin" element={<AdminPage role={role} />} />
       </Routes>
       </div>
     </Router>
