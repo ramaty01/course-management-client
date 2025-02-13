@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import Dashboard from './components/Dashboard';
+// import Dashboard from './components/Dashboard';
+import Home from './components/Home';
 import AddCourse from './components/AddCourse';
 import EditCourse from './components/EditCourse';
 import AddModule from './components/AddModule';
@@ -14,7 +15,10 @@ import ViewModule from './components/ViewModule';
 import ViewComments from './components/ViewComments';
 import AddComment from './components/AddComment';
 import EditComment from './components/EditComment';
+import Header from './components/Header';
 import "bootstrap/dist/css/bootstrap.min.css";
+import Breadcrumb from './components/common/Breadcrumb';
+import NotesList from './components/NotesList';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -34,10 +38,13 @@ function App() {
   }
 
   return (
+    <>
     <Router>
-      <div className="container mt-4">
+      <Header></Header>
+      <Breadcrumb />
+      <div className="container mt-3">
       <Routes>
-        <Route path="/" element={<Dashboard role={role} />} />
+        <Route path="/" element={<Home role={role} />} />
         <Route path="/add-course" element={<AddCourse />} />
         <Route path="/edit-course/:courseId" element={<EditCourse />} />
         <Route path="/add-module/:courseId" element={<AddModule />} />
@@ -45,6 +52,7 @@ function App() {
         <Route path="/edit-module/:moduleId" element={<EditModule />} />
         <Route path="/add-note/:moduleId" element={<AddNote />} />
         <Route path="/view-notes/:moduleId" element={<ViewNotes role={role}/>} />
+        <Route path="/courses/:courseId/notes/" element={<NotesList role={role}/>} />
         <Route path="/edit-note/:noteId" element={<EditNote />} />
         <Route path="/view-comments/:courseNoteId" element={<ViewComments role={role} />} />
         <Route path="/add-comment/:courseNoteId" element={<AddComment />} />
@@ -52,6 +60,7 @@ function App() {
       </Routes>
       </div>
     </Router>
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import logo from "../logo.svg";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -29,26 +30,24 @@ const Login = ({ setToken, setRole }) => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="form-signin w-100 m-auto">
+      <img className="mb-4" src={logo} alt="Logo" width="72" height="57"></img>
+      <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
       <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
+        <div className="form-floating">
+          <input type="text" className="form-control" id="Username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+            <label htmlFor="Username">Username</label>
+        </div>
+        <div className="form-floating">
+          <input type="password" className="form-control" id="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <label htmlFor="password">Password</label>
+        </div>
+
+        <button className="btn btn-primary w-100 py-2" type="submit">Sign in</button>
       </form>
       <p>
         Don’t have an account?{' '}
-        <button onClick={() => navigate('/signup')}>Sign Up</button>
+        <button className="btn btn-info mt-2 ms-4" onClick={() => navigate('/signup')}>Sign Up</button>
       </p>
     </div>
   );
