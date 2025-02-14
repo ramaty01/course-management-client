@@ -10,7 +10,7 @@ const Header = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('userId');
-        window.location.href = '/';
+        window.location.href = '/course-management-client';
     };
 
     return (
