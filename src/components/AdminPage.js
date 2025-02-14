@@ -128,6 +128,10 @@ const AdminPage = ({ role }) => {
                         <div className="d-flex justify-content-between align-items-center">
                             <span>{course.name}</span>
                             <div>
+                                <Link to={`/edit-course/${course._id}`}>
+                                    <button className="btn btn-edit btn-sm me-2"> Edit Course </button>
+                                </Link>
+
                                 <button
                                     className="btn btn-danger btn-sm me-2"
                                     onClick={() => handleDeleteCourse(course._id)}
@@ -145,12 +149,17 @@ const AdminPage = ({ role }) => {
                                 {modules[course._id]?.map((mod) => (
                                     <li key={mod._id} className="list-group-item d-flex justify-content-between">
                                         {mod.name}
+                                        <div>
+                                        <Link to={`/edit-module/${mod._id}`}>
+                                            <button className="btn btn-sm">  Edit module </button>
+                                        </Link>
                                         <button
                                             className="btn btn-danger btn-sm"
                                             onClick={() => handleDeleteModule(course._id, mod._id)}
                                         >
                                             Delete Module
                                         </button>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
