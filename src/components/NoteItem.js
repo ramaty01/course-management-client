@@ -1,7 +1,19 @@
-import React from "react";
+import { React, useState } from "react";
 import { Link } from "react-router-dom";
 
-const NoteItem = ({ note, index, role, userId, handleVote, handleDeleteNote }) => {
+const NoteItem = ({ note, index, role, userId, handleVote, handleDeleteNote, handleEditNote }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedContent, setEditedContent] = useState(note.content);
+
+    const startEditing = () => {
+        setIsEditing(true);
+        setEditedContent(note.content);
+    };
+
+    const saveEdit = () => {
+        handleEditNote(note._id, editedContent);
+        setIsEditing(false);
+    };
     return (
         <div className="text-bg-light rounded p-2" style={{ borderRadius: '5rem' }}>
             <h6 className="text-end fw-bold me-2">📋 #{index + 1}
@@ -11,7 +23,20 @@ const NoteItem = ({ note, index, role, userId, handleVote, handleDeleteNote }) =
                 )}
             </h6>
             <br />
-            <p className="mt-1">{note.content}</p>
+            {/* In-place Editing */}
+            {isEditing ? (
+                <div>
+                    <textarea
+                        className="form-control"
+                        value={editedContent}
+                        onChange={(e) => setEditedContent(e.target.value)}
+                    />
+                    <button className="btn btn-success btn-sm mt-1" onClick={saveEdit}>💾 Save</button>
+                    <button className="btn btn-secondary btn-sm mt-1 ms-2" onClick={() => setIsEditing(false)}>❌ Cancel</button>
+                </div>
+            ) : (
+                <p className="mt-1">{note.content}</p>
+            )}
 
 
             <div className="text-end">
@@ -25,10 +50,8 @@ const NoteItem = ({ note, index, role, userId, handleVote, handleDeleteNote }) =
                         disabled={note.votedUsers.includes(userId)}>👎</button>
 
                     {/* Edit Note Button for Admins or Note Author */}
-                    {(role === 'admin' || role === 'teacher' || note.userId?._id === userId) && (
-                        <Link to={`/edit-note/${note._id}`} >
-                            <button className="btn btn-sm btn-light ms-2">✏️</button>
-                        </Link>
+                    {(role === 'admin' || role === 'teacher' || note.userId?._id === userId)  && !isEditing &&  (
+                        <button className="btn btn-sm btn-light ms-2" onClick={startEditing}>✏️</button>
                     )}
                     {/* Delete Button for Admins or the Note's Author */}
                     {(role === 'admin' || role === 'teacher' || note.userId?._id === userId) && (

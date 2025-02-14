@@ -1,7 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { React, useState } from "react";
+import axios from 'axios';
 
-const CommentSection = ({ note, role, userId, comments, contentMap, handleAddComment, handleContentChange, handleDeleteComment, handleCommentVote }) => {
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+const CommentSection = ({ note, role, userId, comments, contentMap, handleAddComment, handleContentChange, handleDeleteComment, handleCommentVote, setComments }) => {
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editedCommentContent, setEditedCommentContent] = useState({});
+
+    const startEditing = (comment) => {
+        setEditingCommentId(comment._id);
+        setEditedCommentContent({ ...editedCommentContent, [comment._id]: comment.content });
+    };
+
+    const handleSaveComment = async (commentId, noteId) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.put(
+                `${REACT_APP_API_URL}/comments/${commentId}`,
+                { content: editedCommentContent[commentId] },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            // Update the comment in the state immediately
+            setComments(prevComments => ({
+                ...prevComments,
+                [noteId]: prevComments[noteId].map(comment =>
+                    comment._id === commentId ? { ...comment, content: editedCommentContent[commentId] } : comment
+                ),
+            }));
+
+            setEditingCommentId(null);
+        } catch (error) {
+            console.error('Failed to update comment:', error);
+        }
+    };
+
     return (
         <div className="card">
             <div className="card-body">
@@ -19,7 +52,21 @@ const CommentSection = ({ note, role, userId, comments, contentMap, handleAddCom
                                     {(comment.isFlagged && (role === 'admin' || role === 'teacher')) && (
                                         <span className="text-danger" title="This comment is flagged">🚩 Flagged</span>
                                     )}
-                                <span className="ms-2">{comment.content}</span>
+                                 <div className="text-start mt-2">
+                                {editingCommentId === comment._id ? (
+                                    <div>
+                                        <textarea
+                                            className="form-control"
+                                            value={editedCommentContent[comment._id] || ''}
+                                            onChange={(e) => setEditedCommentContent({ ...editedCommentContent, [comment._id]: e.target.value })}
+                                        />
+                                        <button className="btn btn-success btn-sm mt-1" onClick={() => handleSaveComment(comment._id, note._id)}>💾 Save</button>
+                                        <button className="btn btn-secondary btn-sm mt-1 ms-2" onClick={() => setEditingCommentId(null)}>❌ Cancel</button>
+                                    </div>
+                                ) : (
+                                    <p>{comment.content}</p>
+                                )}
+                            </div>
                             </div>
                             <div className="text-start">
 
@@ -34,9 +81,7 @@ const CommentSection = ({ note, role, userId, comments, contentMap, handleAddCom
 
                                 {/* Edit Comment Button for Admins or Comment Author */}
                                 {(role === 'admin' || role === 'teacher' || comment.userId?._id === userId) && (
-                                    <Link to={`/edit-comment/${comment._id}`}>
-                                    <button className="btn btn-sm btn-light ms-2">✏️</button>
-                                    </Link>
+                                    <button className="btn btn-sm btn-light ms-2" onClick={() => startEditing(comment)}>✏️</button>
                                 )}
 
                                 {/* Delete Button for Admins or the Comment's Author */}

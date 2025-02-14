@@ -19,7 +19,7 @@ const AddCourse = () => {
         { name, description, semester, year, format },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
-      navigate('/');
+      navigate('/admin');
     } catch (error) {
       console.error('Failed to add course:', error);
     }

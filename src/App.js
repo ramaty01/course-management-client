@@ -17,7 +17,7 @@ import AddComment from './components/AddComment';
 import EditComment from './components/EditComment';
 import Header from './components/Header';
 import "bootstrap/dist/css/bootstrap.min.css";
-import Breadcrumb from './components/common/Breadcrumb';
+// import Breadcrumb from './components/common/Breadcrumb';
 import NotesList from './components/NotesList';
 import AdminPage from './components/AdminPage';
 
@@ -42,7 +42,7 @@ function App() {
     <>
     <Router>
       <Header></Header>
-      <Breadcrumb />
+      {/* <Breadcrumb /> */}
       <div className="container mt-3">
       <Routes>
         <Route path="/" element={<Home role={role} />} />

@@ -115,16 +115,10 @@ const AdminPage = ({ role }) => {
 
             {/* Add Course Section */}
             <div className="mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="New Course Name"
-                    value={newCourse}
-                    onChange={(e) => setNewCourse(e.target.value)}
-                />
-                <button className="btn btn-primary mt-2" onClick={handleAddCourse}>
-                    Add Course
-                </button>
+                
+            <Link to="/add-course">
+                <button  className="btn btn-primary mb-4">Add Course</button>
+            </Link>
             </div>
 
             {/* List Courses */}
@@ -140,9 +134,7 @@ const AdminPage = ({ role }) => {
                                 >
                                     Delete Course
                                 </button>
-                                <Link to={`/admin/modules/${course._id}`} className="btn btn-secondary btn-sm">
-                                    Manage Modules
-                                </Link>
+                                
                             </div>
                         </div>
 
@@ -157,7 +149,7 @@ const AdminPage = ({ role }) => {
                                             className="btn btn-danger btn-sm"
                                             onClick={() => handleDeleteModule(course._id, mod._id)}
                                         >
-                                            Delete
+                                            Delete Module
                                         </button>
                                     </li>
                                 ))}

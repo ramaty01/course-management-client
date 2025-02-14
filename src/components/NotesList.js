@@ -117,6 +117,26 @@ const NotesList = ({ role }) => {
         }
     };
 
+    const handleEditNote = async (noteId, newContent) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.put(`${REACT_APP_API_URL}/notes/${noteId}`, 
+                { content: newContent }, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+    
+            // Update the note list without reloading
+            setNotes(prevNotes => ({
+                ...prevNotes,
+                [activeModule]: prevNotes[activeModule].map(note =>
+                    note._id === noteId ? { ...note, content: newContent } : note
+                ),
+            }));
+        } catch (error) {
+            console.error('Failed to update note:', error);
+        }
+    };
+
     const handleVote = async (noteId, voteType) => {
         try {
             await axios.put(
@@ -249,7 +269,7 @@ const NotesList = ({ role }) => {
                                                 <li key={note._id} className="list-group-item">
 
                                                     {/* Notes content section */}
-                                                    <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={() => handleDeleteNote(note._id, module._id)} ></NoteItem>
+                                                    <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={() => handleDeleteNote(note._id, module._id)} handleEditNote={handleEditNote}></NoteItem>
 
                                                     {/* Comments section */}
                                                     {/* <CommentSection note={note} role={role} userId={userId}
@@ -287,6 +307,7 @@ const NotesList = ({ role }) => {
                                                                         handleContentChange={handleContentChange}
                                                                         handleCommentVote={handleCommentVote}
                                                                         handleDeleteComment={(commentId) => handleDeleteComment(commentId, note._id)}
+                                                                        setComments={setComments}
                                                                     />
                                                                 </div>
                                                             </div>
