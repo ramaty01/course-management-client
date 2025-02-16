@@ -38,7 +38,7 @@ const EditCourse = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
 
-      navigate('/');
+      navigate('/admin');
     } catch (error) {
       alert('Failed to update course');
     }

@@ -32,7 +32,7 @@ const EditModule = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
 
-      navigate(-1);
+      navigate('/admin');
     } catch (error) {
       alert('Failed to update module');
     }
