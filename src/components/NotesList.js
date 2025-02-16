@@ -4,6 +4,7 @@ import axios from 'axios';
 import NoteItem from "./NoteItem";
 import CommentSection from "./CommentSection";
 import ModuleTabs from "./ModuleTabs";
+import { set } from 'mongoose';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -188,6 +189,46 @@ const NotesList = ({ role }) => {
         }
     };
 
+    const handleCommentFlag = async (commentId, noteId) => {
+        try {
+            await axios.put(
+                `${REACT_APP_API_URL}/comments/${commentId}/flag`,
+                {},
+                { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+            );
+            // Fetch updated notes to ensure userId and role are populated
+            const response = await axios.get(`${REACT_APP_API_URL}/notes/${noteId}/comments`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
+            setComments(prevComments => ({
+                ...prevComments,
+                [noteId]: response.data // Add the new comment to the list
+            }));
+        } catch (error) {
+            alert(error.response?.data?.error || 'Failed to flag comment');
+        }
+    };
+
+    const handleNoteFlag = async (noteId) => {
+        try {
+            await axios.put(
+                `${REACT_APP_API_URL}/notes/${noteId}/flag`,
+                {},
+                { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+            );
+            // Fetch updated notes to ensure userId and role are populated
+            const response = await axios.get(`${REACT_APP_API_URL}/modules/${activeModule}/notes`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
+            setNotes(prevNotes => ({
+                ...prevNotes,
+                [activeModule]: response.data // Replace with fresh data including username
+            }));
+        } catch (error) {
+            alert(error.response?.data?.error || 'Failed to flag note');
+        }
+    };
+
     const handleAddComment = async (noteId, e) => {
         e.preventDefault();
         try {
@@ -269,7 +310,7 @@ const NotesList = ({ role }) => {
                                                 <li key={note._id} className="list-group-item">
 
                                                     {/* Notes content section */}
-                                                    <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={() => handleDeleteNote(note._id, module._id)} handleEditNote={handleEditNote}></NoteItem>
+                                                    <NoteItem note={note} role={role} userId={userId} index={index} handleVote={handleVote} handleDeleteNote={() => handleDeleteNote(note._id, module._id)} handleEditNote={handleEditNote} handleFlagNote={handleNoteFlag}></NoteItem>
 
                                                     {/* Comments section */}
                                                     {/* <CommentSection note={note} role={role} userId={userId}
@@ -307,6 +348,7 @@ const NotesList = ({ role }) => {
                                                                         handleContentChange={handleContentChange}
                                                                         handleCommentVote={handleCommentVote}
                                                                         handleDeleteComment={(commentId) => handleDeleteComment(commentId, note._id)}
+                                                                        handleCommentFlag={handleCommentFlag}
                                                                         setComments={setComments}
                                                                     />
                                                                 </div>
