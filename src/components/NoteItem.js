@@ -49,7 +49,10 @@ const NoteItem = ({ note, index, role, userId, handleVote, handleDeleteNote, han
                     <button className="btn btn-sm btn-light ms-2" onClick={() => handleVote(note._id, 'downvote')}
                         disabled={note.votedUsers.includes(userId)}>👎</button>
 
-                    <button className="btn btn-sm btn-light ms-2" onClick={() => handleFlagNote(note._id)}>🚩</button>
+                    {/* Flag Note Button for Admins or Note Author */}
+                    {(role === 'admin' || role === 'teacher') && (
+                        <button className="btn btn-sm btn-light ms-2" onClick={() => handleFlagNote(note._id)}>🚩</button>
+                    )}
                     
                     {/* Edit Note Button for Admins or Note Author */}
                     {(role === 'admin' || role === 'teacher' || note.userId?._id === userId)  && !isEditing &&  (
