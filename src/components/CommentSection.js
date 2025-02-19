@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-const CommentSection = ({ note, role, userId, comments, contentMap, handleAddComment, handleContentChange, handleDeleteComment, handleCommentVote, setComments }) => {
+const CommentSection = ({ note, role, userId, comments, contentMap, handleAddComment, handleContentChange, handleDeleteComment, handleCommentVote, handleCommentFlag, setComments }) => {
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedCommentContent, setEditedCommentContent] = useState({});
 
@@ -78,6 +78,8 @@ const CommentSection = ({ note, role, userId, comments, contentMap, handleAddCom
 
                                 <button className="btn btn-sm btn-light ms-2" onClick={() => handleCommentVote(comment._id, 'downvote', comment.courseNoteId)}
                                     disabled={comment.votedUsers.includes(userId)}>👎</button>
+
+                                <button className="btn btn-sm btn-light ms-2" onClick={() => handleCommentFlag(comment._id)}>🚩</button>
 
                                 {/* Edit Comment Button for Admins or Comment Author */}
                                 {(role === 'admin' || role === 'teacher' || comment.userId?._id === userId) && (
