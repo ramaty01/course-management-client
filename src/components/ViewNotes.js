@@ -117,7 +117,6 @@ const ViewNotes = ({role}) => {
             <button
               onClick={() => handleVote(note._id, 'upvote')}
               disabled={note.votedUsers.includes(userId)}
-              style={{ marginRight: '10px', marginBottom: '10px' }}
             >
               👍 Upvote
             </button>
@@ -125,7 +124,6 @@ const ViewNotes = ({role}) => {
             <button
               onClick={() => handleVote(note._id, 'downvote')}
               disabled={note.votedUsers.includes(userId)}
-              style={{ marginRight: '10px', marginBottom: '10px' }}
             >
               👎 Downvote 
             </button>
@@ -133,18 +131,13 @@ const ViewNotes = ({role}) => {
             {/* Edit Note Button for Admins or Note Author */}
             {(role === 'admin' || note.userId?._id === userId) && (
                 <Link to={`/edit-note/${note._id}`} >
-                <button
-                  style={{ marginRight: '10px', marginBottom: '10px' }}
-                >  ✏️ Edit note </button>
+                <button>  ✏️ Edit note </button>
                 </Link>
               )}
 
             {/* Delete Button for Admins or the Note's Author */}
-            {(role === 'admin' || note.userId?._id === userId) && (
-                <button 
-                  onClick={() => handleDeleteNote(note._id)} 
-                  style={{ marginRight: '10px', marginBottom: '10px' }}
-                >
+            {(role === 'admin' || note.userId === userId) && (
+                <button onClick={() => handleDeleteNote(note._id)} >
                   ❌ Delete note 
                 </button>
             )}
