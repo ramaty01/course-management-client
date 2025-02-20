@@ -1,3 +1,5 @@
+/*! For license information please see browser.umd.js.LICENSE.txt */
+
 /**
  * @license React
  * react-dom-client.production.js
