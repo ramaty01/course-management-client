@@ -9,6 +9,7 @@ npm install bootstrap
 npm start  
   
 This should be enough to run locally.  
+
 You will probably have to replace  
 REACT_APP_API_URL = 'https://course-management-olsc.onrender.com'  
 in the .env 
