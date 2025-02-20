@@ -23,7 +23,7 @@ const CourseHome = () => {
             (filters.semester ? course.semester === filters.semester : true) &&
             (filters.year ? course.year.toString() === filters.year : true) &&
             (filters.format ? course.format === filters.format : true) &&
-            (searchTerm ? course.name.toLowerCase().includes(searchTerm.toLowerCase()) : true)
+            (searchTerm ? Object.values(course).some(value => value.toString().toLowerCase().includes(searchTerm.toLowerCase())) : true)
         )
         .sort((a, b) => {
             if (filters.sortBy === 'name') return a.name.localeCompare(b.name);
