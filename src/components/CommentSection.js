@@ -79,10 +79,7 @@ const CommentSection = ({ note, role, userId, comments, contentMap, handleAddCom
                                 <button className="btn btn-sm btn-light ms-2" onClick={() => handleCommentVote(comment._id, 'downvote', comment.courseNoteId)}
                                     disabled={comment.votedUsers.includes(userId)}>👎</button>
 
-                                {/* Flag Comment Button for Admins or Note Author */}
-                                {(role === 'admin' || role === 'teacher') && (
-                                    <button className="btn btn-sm btn-light ms-2" onClick={() => handleCommentFlag(comment._id)}>🚩</button>
-                                )}
+                                <button className="btn btn-sm btn-light ms-2" onClick={() => handleCommentFlag(comment._id)}>🚩</button>
 
                                 {/* Edit Comment Button for Admins or Comment Author */}
                                 {(role === 'admin' || role === 'teacher' || comment.userId?._id === userId) && (
