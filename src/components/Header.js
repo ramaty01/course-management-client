@@ -5,6 +5,7 @@ import logo from "../logo.svg";
 const Header = () => {
 
     const navigate = useNavigate();
+    const role = localStorage.getItem('role');
 
     const handleSignOut = () => {
         localStorage.removeItem('token');
@@ -27,7 +28,9 @@ const Header = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item"><Link className="nav-link" to="/">Courses</Link></li>
-                            <li className="nav-item"><Link className="nav-link" to="/admin">Admin</Link></li>
+                            {role === 'admin' && (
+                                <li className="nav-item"><Link className="nav-link" to="/admin">Admin</Link></li>
+                            )}
                         </ul>
                         <form className="d-flex" role="search">
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
