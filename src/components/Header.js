@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from "../logo.svg";
 
 const Header = () => {
-
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const role = localStorage.getItem('role');
 
@@ -12,6 +12,11 @@ const Header = () => {
         localStorage.removeItem('role');
         localStorage.removeItem('userId');
         window.location.href = '/course-management-client';
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        navigate(`/?search=${searchTerm}`);
     };
 
     return (
@@ -32,8 +37,15 @@ const Header = () => {
                                 <li className="nav-item"><Link className="nav-link" to="/admin">Admin</Link></li>
                             )}
                         </ul>
-                        <form className="d-flex" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                        <form className="d-flex" role="search" onSubmit={handleSearch}>
+                            <input
+                                className="form-control me-2"
+                                type="search"
+                                placeholder="Search"
+                                aria-label="Search"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                             <button className="btn btn-outline-success" type="submit">Search</button>
                         </form>
                         {/* Sign Out Button */}
