@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -7,6 +7,9 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const CourseHome = () => {
     const [courses, setCourses] = useState([]);
     const [filters, setFilters] = useState({ semester: '', year: '', format: '', sortBy: '' });
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const searchTerm = searchParams.get('search') || '';
 
     useEffect(() => {
         axios
@@ -19,7 +22,8 @@ const CourseHome = () => {
         .filter(course =>
             (filters.semester ? course.semester === filters.semester : true) &&
             (filters.year ? course.year.toString() === filters.year : true) &&
-            (filters.format ? course.format === filters.format : true)
+            (filters.format ? course.format === filters.format : true) &&
+            (searchTerm ? Object.values(course).some(value => value.toString().toLowerCase().includes(searchTerm.toLowerCase())) : true)
         )
         .sort((a, b) => {
             if (filters.sortBy === 'name') return a.name.localeCompare(b.name);
