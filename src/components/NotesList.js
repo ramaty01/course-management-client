@@ -10,6 +10,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const NotesList = ({ role }) => {
     const { courseId } = useParams();
+    const [courseName, setCourseName] = useState('');
     const [modules, setModules] = useState([]);
     const [notes, setNotes] = useState({});
     const [comments, setComments] = useState({});
@@ -25,6 +26,16 @@ const NotesList = ({ role }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        const fetchCourseName = async () => {
+            try {
+                const response = await axios.get(`${REACT_APP_API_URL}/courses/${courseId}`);
+                setCourseName(response.data.name);
+            } catch (error) {
+                console.error('Failed to fetch course name:', error);
+            }
+        };
+
         const fetchModulesAndNotes = async () => {
             try {
                 setLoading(true);
@@ -65,7 +76,7 @@ const NotesList = ({ role }) => {
                 setLoading(false);
             }
         };
-
+        fetchCourseName();
         fetchModulesAndNotes();
     }, [courseId]);
 
@@ -372,7 +383,7 @@ const NotesList = ({ role }) => {
                 {/* Vertical Tabs Navigation */}
                 <div className="col-md-3">
                     <div className="position-sticky" style={{ top: '60px' }}>
-                        <h2>Course Notes <span className="badge rounded-pill text-bg-primary fs-6">{notes.length}</span></h2>
+                        <h2>{courseName} <span className="badge rounded-pill text-bg-primary fs-6">{notes.length}</span></h2>
                         <p></p>
                         {/* Back button to return to the Modules */}
                         <div className="text-end">
